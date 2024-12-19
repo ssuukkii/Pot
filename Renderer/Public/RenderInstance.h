@@ -39,7 +39,7 @@ public: /* For.Renderer */
 	void Show_Layer_View();
 	_bool Get_isLayerView();
 	void Set_CurMapType(CRenderer::MAP_TYPE eType);
-
+	ID3D11ShaderResourceView* Get_ViewPortSRV();
 public: /* For.Target_Manager */
 	HRESULT Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor);
 	HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);

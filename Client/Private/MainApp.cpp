@@ -69,8 +69,6 @@ void CMainApp::Fixed_Update(_float fTimeDelta)
 HRESULT CMainApp::Render(_float fTimeDelta)
 {
 	//m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
-	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 1.f));
-	m_pGameInstance->Clear_DepthStencil_View();
 
 	//레벨매니저 렌더는 게임인스턴스
 	m_pGameInstance->Render_Engine(fTimeDelta);
@@ -78,8 +76,9 @@ HRESULT CMainApp::Render(_float fTimeDelta)
 	//나머지 렌더는 렌더인스턴스
 	m_pRenderInstance->Render_Engine(fTimeDelta);
 
-	//IMGUI 렌더는 로딩때는 하면 안됨
- 
+	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 1.f));
+	m_pGameInstance->Clear_DepthStencil_View();
+
 	_uint currentLevel_Index = m_pGameInstance->Get_CurrentLevel_Index();
 
 	_bool isOk_Render = currentLevel_Index != (_uint)LEVEL_LOADING && (_uint)currentLevel_Index != LEVEL_LOGO;
@@ -87,7 +86,7 @@ HRESULT CMainApp::Render(_float fTimeDelta)
 		m_pImgui_Manager->Render(fTimeDelta);
 
 	m_pGameInstance->Present();
-
+ 
 	return S_OK;
 }
 
@@ -103,7 +102,8 @@ HRESULT CMainApp::Create_IMGUI_Manager()
 {
 	m_pImgui_Manager = CImgui_Manager::Get_Instance();
 	m_pImgui_Manager->Initialize(m_pDevice, m_pContext);
-
+	m_pImgui_Manager->SetMainApp(this);
+	
 	return S_OK;
 }
 

@@ -24,11 +24,11 @@
 #include "imnodes.h"
 #include <iostream>
 
-_bool bShowImGuiWindows = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
-_bool bShowImGuiRenderTarget = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
-_bool bShowImGuiDebug_Component = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
-_bool bShowImGuiDebug_COut = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
-_bool bShowImGuiLayerView = false;
+_bool bShowImGuiWindows = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiRenderTarget = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiDebug_Component = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiDebug_COut = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiLayerView = true;
 _bool bShowImGuiPlayerInput = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
 
 _bool bShowImGuiUI_TopShow = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
@@ -75,6 +75,9 @@ HRESULT CImgui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	m_vecTabs.push_back(CIMGUI_UI_Tab::Create(m_pDevice, m_pContext));
 	m_vecTabs.push_back(CIMGUI_Effect_Tab::Create(m_pDevice, m_pContext));
 	m_vecTabs.push_back(CIMGUI_Object_Tab::Create(m_pDevice, m_pContext));
+
+	m_pBackBufferSRV = m_pRenderInstance->Get_ViewPortSRV();
+	Safe_AddRef(m_pBackBufferSRV);
 
 	return S_OK;
 }
@@ -132,10 +135,74 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	
-	// Render IMGUI UI elements
-	Render_IMGUI(fTimeDelta);
-	Render_ShaderTabs(fTimeDelta);
-	Render_EffectAnimationTabs(fTimeDelta);
+	//// Render IMGUI UI elements
+	//Render_IMGUI(fTimeDelta);
+	//Render_ShaderTabs(fTimeDelta);
+	//Render_EffectAnimationTabs(fTimeDelta);
+
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImVec2(1920, 1080));
+	
+	ImGui::Begin("Window", nullptr,
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoResize |  
+		ImGuiWindowFlags_NoMove |    
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar | 
+		ImGuiWindowFlags_NoScrollWithMouse);
+	
+	
+	/*메뉴바는 개별로임 그냥 저장버튼 따로 빼야될듯*/
+	//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+	//ImGui::BeginChild("Menu", ImVec2(1920, 30), true);
+	////
+	//ImGui::EndChild();
+	//ImGui::PopStyleVar();
+
+	/**
+	*	메뉴바는 개별로임 그냥 저장버튼 따로 빼야될듯
+	*	서로 창크기 조절하는 기능은 여유나면 하기
+	*	밑 애니메이션창은 이펙트툴 그대로 이식 및 탭으로 나눠서 쉐이더탭까지
+	*	오른쪽밑엔 이펙트툴에서 파생된 라업룩 포지션창 같은거 조절하는창으로
+	*	오른쪽상단엔 뷰포트에 나와있는 오브젝트 나열 ( 아웃라인 추가, 피킹 세부조정 )
+	*/
+	ImGui::BeginChild("Viewport", ImVec2(1280, 720), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Image((ImTextureID)m_pBackBufferSRV, ImVec2(1280, 720));
+	ImGui::EndChild();
+
+	ImGui::SameLine();
+
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+
+	ImGui::BeginChild("RightPanel", ImVec2(1920 - 1280, 720), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+	ImGui::BeginChild("Outliner", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Text("Outliner");
+	if (ImGui::TreeNode("Scene Objects"))
+	{
+
+		ImGui::TreePop();
+	}
+	ImGui::EndChild();
+
+	ImGui::BeginChild("Details", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Text("Ex");
+	ImGui::Text("Name: Object 1");
+	ImGui::Text("Position: (0, 0, 0)");
+	ImGui::Text("Rotation: (0, 0, 0)");
+	ImGui::Text("Scale: (1, 1, 1)");
+	ImGui::EndChild();
+
+	ImGui::EndChild();
+
+	ImGui::PopStyleVar();
+
+	ImGui::BeginChild("AnimationBar", ImVec2(1920, 360), true);
+	ImGui::Text("Animation Timeline");
+	ImGui::EndChild();
+
+	ImGui::End();
 
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -440,6 +507,11 @@ void CImgui_Manager::Render_EffectAnimationTabs(_float fTimeDelta)
 {
 }
 
+void CImgui_Manager::ToolViewRender()
+{
+
+}
+
 void CImgui_Manager::Free()
 {
 	for (auto& iter : m_vecTabs)
@@ -459,6 +531,6 @@ void CImgui_Manager::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pRenderInstance);
-
+	Safe_Release(m_pBackBufferSRV);
 	__super::Free();
 }

@@ -1362,6 +1362,9 @@
     <Filter Include="02.GameObjects\UI\Win\Team">
       <UniqueIdentifier>{7e987a30-5b83-4cc4-84dc-2ac1cfa4a056}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.IMGUI\Tool">
+      <UniqueIdentifier>{347f1027-35f6-414c-aa3c-5d375941f92f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

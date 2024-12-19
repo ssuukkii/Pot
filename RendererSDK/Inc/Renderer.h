@@ -125,6 +125,7 @@ public: /* For.Distortion Function*/
 	void Create_HitDistortion(_float4 vPlayerPos, _float3 vDir = { 1,0,0 }, _float2 vOffSetPos = { 0.f,0.f }, _float2 vOffSetScale = { 1.f,1.f }, _float fLifeTime = 0.1f);
 
 	void Set_CurMapType(MAP_TYPE eType) { m_eCurMapType = eType; }
+
 private: /* For.Distortion Variable */
 	vector<DISTORTION_DESC>		m_Distortions;
 	
@@ -143,6 +144,7 @@ private: /* For.Distortion Variable */
 	MAP_TYPE m_eCurMapType = { MAP_SPACE };
 public:
 	void Set_AuraColor(_float4 vColor) { m_fAuraColor = vColor; }
+	ID3D11ShaderResourceView* Get_ViewPortSRV();
 private:
 	_float4 m_fAuraColor = {};
 private:
@@ -177,7 +179,7 @@ private:
 	HRESULT Render_CutScene_Object(_float fTimeDelta);
 	HRESULT Render_CutScene_Late_Effect(_float fTimeDelta);
 	HRESULT Render_Node(_float fTimeDelta);
-
+	HRESULT Render_ToolViewPort(_float fTimeDelta);
 
 	HRESULT Initialize_RenderTarget();
 private:
