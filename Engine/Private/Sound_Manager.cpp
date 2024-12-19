@@ -25,7 +25,7 @@ HRESULT CSound_Manager::Initialize_Prototype()
 	FMOD_System_CreateChannelGroup(m_pSoundSystem, nullptr, &m_pChannelGroup);
 
 	// 카테고리별 초기 볼륨 설정 (기본값: 1.0f)
-	m_categoryVolumes[SOUND_CATEGORY::BGM] = 1.0f;
+	m_categoryVolumes[SOUND_CATEGORY::BGM] = 0.0f;
 	m_categoryVolumes[SOUND_CATEGORY::VOICE] = 1.0f;
 	m_categoryVolumes[SOUND_CATEGORY::SFX] = 1.0f;
 
