@@ -69,12 +69,12 @@ HRESULT CImgui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	ImGui_ImplWin32_EnableDpiAwareness();
 
 	//IMGUI 탭 객체 생성
-	m_vecTabs.push_back(CIMGUI_Camera_Tab::Create(m_pDevice, m_pContext));
-	m_vecTabs.push_back(CIMGUI_Level_Tab::Create(m_pDevice, m_pContext));
-	m_vecTabs.push_back(CIMGUI_Animation_Tab::Create(m_pDevice, m_pContext));
-	m_vecTabs.push_back(CIMGUI_UI_Tab::Create(m_pDevice, m_pContext));
+	//m_vecTabs.push_back(CIMGUI_Camera_Tab::Create(m_pDevice, m_pContext));
+	//m_vecTabs.push_back(CIMGUI_Level_Tab::Create(m_pDevice, m_pContext));
+	//m_vecTabs.push_back(CIMGUI_Animation_Tab::Create(m_pDevice, m_pContext));
+	//m_vecTabs.push_back(CIMGUI_UI_Tab::Create(m_pDevice, m_pContext));
 	m_vecTabs.push_back(CIMGUI_Effect_Tab::Create(m_pDevice, m_pContext));
-	m_vecTabs.push_back(CIMGUI_Object_Tab::Create(m_pDevice, m_pContext));
+	//m_vecTabs.push_back(CIMGUI_Object_Tab::Create(m_pDevice, m_pContext));
 
 	m_pBackBufferSRV = m_pRenderInstance->Get_ViewPortSRV();
 	Safe_AddRef(m_pBackBufferSRV);
@@ -198,9 +198,22 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 
 	ImGui::PopStyleVar();
 
-	ImGui::BeginChild("AnimationBar", ImVec2(1920, 360), true);
-	ImGui::Text("Animation Timeline");
-	ImGui::EndChild();
+	//ImGui::BeginChild("AnimationBar", ImVec2(1920, 360), true);
+	if (ImGui::BeginTabBar("DragonBall_Tool")) { // 탭 바 시작
+
+		for (auto& tab : m_vecTabs)
+		{
+			if (ImGui::BeginTabItem(tab->GetTabName()))
+			{
+				tab->Render(fTimeDelta);
+				ImGui::EndTabItem();
+			}
+		}
+		Render_ShaderTabs(fTimeDelta);
+
+		ImGui::EndTabBar(); // 탭 바 종료
+	}
+	//ImGui::EndChild();
 
 	ImGui::End();
 
@@ -455,12 +468,15 @@ void CImgui_Manager::Render_IMGUI(_float fTimeDelta)
 
 void CImgui_Manager::Render_ShaderTabs(_float fTimeDelta)
 {
+	ImGui::BeginTabItem("Shader Tab");
 	for (auto& tab : m_vecShader_Tabs)
 	{
-		ImGui::Begin("Shader Tab");
-
+		//ImGui::Begin("Shader Tab");
+		
 		if (/*ImGui::BeginTabItem(to_string(tab->m_iNumberId).c_str(), &tab->m_TabPick) || */tab.second->m_TabPick == true)
 		{
+			//ImGui::BeginTabItem("Shader Tab");
+
 			ImGui::Text("Mesh Index : %d", tab.second->m_iNumberId);
 			m_iCurShaderTabId = tab.second->m_iNumberId;
 
@@ -475,6 +491,8 @@ void CImgui_Manager::Render_ShaderTabs(_float fTimeDelta)
 
 			m_iCurShaderTabIndex = tab.second->m_iNumberId;
 			tab.second->Render(fTimeDelta);
+
+			
 			//ImGui::EndTabItem();
 		}
 		else
@@ -495,12 +513,13 @@ void CImgui_Manager::Render_ShaderTabs(_float fTimeDelta)
 			}
 		}
 
-
-		m_ImGuiScreen.ShaderImGuiPos = ImGui::GetWindowPos();
-		m_ImGuiScreen.ShaderImGuiSize = ImGui::GetWindowSize();
-		ImGui::End(); // 메인 창 종료
+	
+		//ImGui::End();
+		
 	}
-
+	ImGui::EndTabItem(); // 메인 창 종료
+	//m_ImGuiScreen.ShaderImGuiPos = ImGui::GetWindowPos();
+	//m_ImGuiScreen.ShaderImGuiSize = ImGui::GetWindowSize();
 }
 
 void CImgui_Manager::Render_EffectAnimationTabs(_float fTimeDelta)
