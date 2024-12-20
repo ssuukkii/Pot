@@ -821,6 +821,10 @@ void CIMGUI_Effect_Tab::Render_For_Layer_KeyFrame(_float fTimeDelta)
 
             bool isChecked = pLayer->m_bIsFollowing;
 
+            ImGui::SameLine();
+            ImGui::Text("Following");
+            ImGui::SameLine();
+
             if (ImGui::Checkbox("##Following", &isChecked))
             {
                 pLayer->m_bIsFollowing = isChecked;
@@ -894,44 +898,11 @@ void CIMGUI_Effect_Tab::Render_For_Layer_KeyFrame(_float fTimeDelta)
                 bool isBackSide = effectBacksideChecks[item];
                 bool isShaderLoop = effectShaderLoopChecks[item];
 
-                if (ImGui::Button("Change Color"))
+                if (ImGui::Button("Effect Setting"))
                 {
                     EffectName = effectNames[item];
                     openColorWindow = true;
                     m_pEffect_Manager->Find_In_Layer_Effect(selectedLayerName, EffectName)->m_IsColorEffect = true;
-                }
-                if (ImGui::Checkbox("##Bilboarding", &isChecked))
-                {
-                    CEffect* pEffect = m_pEffect_Manager->Find_In_Layer_Effect(selectedLayerName, effectNames[item]);
-                    if (pEffect)
-                    {
-                        pEffect->m_bIsBillboarding = isChecked;
-                    }
-                    effectChecks[item] = isChecked;
-                }
-
-                ImGui::SameLine();
-
-                if (ImGui::Checkbox("##BacksideEffect", &isBackSide))
-                {
-                    CEffect* pEffect = m_pEffect_Manager->Find_In_Layer_Effect(selectedLayerName, effectNames[item]);
-                    if (pEffect)
-                    {
-                        pEffect->m_bIsBackSideEffect = isBackSide;
-                    }
-                    effectBacksideChecks[item] = isBackSide;
-                }
-
-                ImGui::SameLine();
-
-                if (ImGui::Checkbox("##ShaderLoopEffect", &isShaderLoop))
-                {
-                    CEffect* pEffect = m_pEffect_Manager->Find_In_Layer_Effect(selectedLayerName, effectNames[item]);
-                    if (pEffect)
-                    {
-                        pEffect->m_bIsShaderLoop = isShaderLoop;
-                    }
-                    effectShaderLoopChecks[item] = isShaderLoop;
                 }
 
                 ImGui::PopStyleColor(2);
@@ -1291,6 +1262,8 @@ void CIMGUI_Effect_Tab::Render_For_Effect_Color()
 
     color = m_pEffect_Manager->Find_In_Layer_Effect(selectedLayerName, EffectName)->m_vColor;
 
+    CEffect* pEffect = m_pEffect_Manager->Find_In_Layer_Effect(selectedLayerName, EffectName);
+
     ImGui::Dummy(ImVec2(5.0f, 1.0f));
     ImGui::SameLine();
     valueChanged |= ImGui::VSliderFloat("R", ImVec2(20, 160), &color.x, 0.0f, 255.0f, "");
@@ -1333,8 +1306,44 @@ void CIMGUI_Effect_Tab::Render_For_Effect_Color()
             m_pEffect_Manager->Set_Layer_Effect_Color(selectedLayerName, EffectName, color);
     }
 
-    ImGui::End();
-}
+    _bool bIsBillboarding = false;
+    _bool bIsBackSideEffect = false;
+    _bool bIsShaderLoop = false;
+
+       if (pEffect)
+       {
+           bIsBillboarding = pEffect->m_bIsBillboarding;
+           bIsBackSideEffect = pEffect->m_bIsBackSideEffect;
+           bIsShaderLoop = pEffect->m_bIsShaderLoop;
+        }
+    
+       ImGui::Separator();
+
+       ImGui::Text("Bilboarding: ");
+       ImGui::SameLine();
+
+        if (ImGui::Checkbox("##Bilboarding", &bIsBillboarding))
+        {
+             pEffect->m_bIsBillboarding = bIsBillboarding;
+        }
+        ImGui::Text("BackSidePlayer: ");
+        ImGui::SameLine();
+
+        if (ImGui::Checkbox("##bIsBackSideEffect", &bIsBackSideEffect))
+        {
+            pEffect->m_bIsBackSideEffect = bIsBackSideEffect;
+        }
+        ImGui::Text("ShaderLoop: ");
+        ImGui::SameLine();
+
+        if (ImGui::Checkbox("##bIsShaderLoop", &bIsShaderLoop))
+        {
+            pEffect->m_bIsShaderLoop = bIsShaderLoop;
+        }
+
+        ImGui::End();
+
+ }
 
 void CIMGUI_Effect_Tab::Render_For_Layer_Transform()
 {
