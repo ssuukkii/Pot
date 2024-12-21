@@ -150,7 +150,8 @@ void CEffect_NoneLight::Late_Update(_float fTimeDelta)
 			{
 				if (m_iRenderGroupIndex == CRenderer::RG_BACKSIDE_EFFECT || m_iRenderGroupIndex == CRenderer::RG_NONLIGHT_EFFECT)
 					m_pRenderInstance->Add_RenderObject(static_cast<CRenderer::RENDERGROUP>(m_iRenderIndex), this);
-				m_pRenderInstance->Add_RenderObject(static_cast<CRenderer::RENDERGROUP>(m_iRenderGroupIndex), this);
+
+				m_pRenderInstance->Add_RenderObject(static_cast<CRenderer::RENDERGROUP>(26), this);
 				//m_pRenderInstance->Add_RenderObject(CRenderer::RG_NONLIGHT_EFFECT, this);
 			}
 		}
@@ -196,7 +197,15 @@ HRESULT CEffect_NoneLight::Render(_float fTimeDelta)
 
 		if (FAILED(m_pDiffuseTextureCom->Bind_ShaderResource(m_pShaderCom, "g_AlphaTexture", 1)))
 			return E_FAIL;
-		
+
+		if (m_iRenderIndex == 1)
+		{
+			_float4x4 TestWorldMatrix;
+			XMStoreFloat4x4(&TestWorldMatrix, XMMatrixIdentity());
+			if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &TestWorldMatrix)))
+				return E_FAIL;
+		}
+
 		if (FAILED(m_pShaderCom->Begin(m_iPassIndex)))
 			return E_FAIL;
 

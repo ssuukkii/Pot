@@ -146,7 +146,7 @@ void CEffect_ZNone::Late_Update(_float fTimeDelta)
 			if (m_iRenderIndex == 1) //Å×½ºÆ®
 			{
 				m_pRenderInstance->Add_RenderObject(static_cast<CRenderer::RENDERGROUP>(m_iRenderIndex), this);
-				m_pRenderInstance->Add_RenderObject(CRenderer::RG_BLEND, this);
+				m_pRenderInstance->Add_RenderObject(CRenderer::RG_TESTEFFECT, this);
 			}
 		}
 	}
@@ -175,6 +175,14 @@ HRESULT CEffect_ZNone::Render(_float fTimeDelta)
 
 		if (FAILED(m_pDiffuseTextureCom->Bind_ShaderResource(m_pShaderCom, "g_AlphaTexture", 1)))
 			return E_FAIL;
+
+		if (m_iRenderIndex == 1)
+		{
+			_float4x4 TestWorldMatrix;
+			XMStoreFloat4x4(&TestWorldMatrix, XMMatrixIdentity());
+			if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &TestWorldMatrix)))
+				return E_FAIL;
+		}
 
 		if (FAILED(m_pShaderCom->Begin(m_iPassIndex))) // 2
 			return E_FAIL;

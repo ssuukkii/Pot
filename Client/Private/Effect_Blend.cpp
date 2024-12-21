@@ -157,7 +157,8 @@ void CEffect_Blend::Late_Update(_float fTimeDelta)
 			{
 				if (m_iRenderGroupIndex == CRenderer::RG_BACKSIDE_EFFECT || m_iRenderGroupIndex == CRenderer::RG_BLEND)
 					m_pRenderInstance->Add_RenderObject(static_cast<CRenderer::RENDERGROUP>(m_iRenderIndex), this);
-				m_pRenderInstance->Add_RenderObject(static_cast<CRenderer::RENDERGROUP>(m_iRenderGroupIndex), this);
+
+				m_pRenderInstance->Add_RenderObject(static_cast<CRenderer::RENDERGROUP>(26), this);
 			}
 		}
 	}
@@ -215,8 +216,24 @@ HRESULT CEffect_Blend::Render(_float fTimeDelta)
 		if (FAILED(m_pDiffuseTextureCom->Bind_ShaderResource(m_pShaderCom, "g_AlphaTexture", 1)))
 			return E_FAIL;
 
-		if (FAILED(m_pShaderCom->Begin(fTimeDelta != -10.f ? m_iPassIndex : 5))) // 2
-			return E_FAIL;
+		if (m_iRenderIndex == 1)
+		{
+			_float4x4 TestWorldMatrix;
+			XMStoreFloat4x4(&TestWorldMatrix, XMMatrixIdentity());
+			if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &TestWorldMatrix)))
+				return E_FAIL;
+		}
+
+		if (m_iPassIndex != 1)
+		{
+			if (FAILED(m_pShaderCom->Begin(fTimeDelta != -10.f ? m_iPassIndex : 5))) // 2
+				return E_FAIL;
+		}
+		else
+		{
+			if (FAILED(m_pShaderCom->Begin(1))) // 2
+				return E_FAIL;
+		}
 
 		if (FAILED(m_pModelCom->Render(i)))
 			return E_FAIL;
@@ -262,6 +279,14 @@ HRESULT CEffect_Blend::Ready_Components(_wstring* pModelName, _wstring* pMaskTex
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, DiffuseTexturueName,
 		TEXT("Com_DiffuseTexture"), reinterpret_cast<CComponent**>(&m_pDiffuseTextureCom))))
 		return E_FAIL;
+
+	if (m_iRenderIndex == 1)
+	{
+		if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, L"Prototype_Component_Texture_Effect_cmn_test",
+			TEXT("Com_DiffuseTexture_Test"), reinterpret_cast<CComponent**>(&m_pTestTextureCom))))
+			return E_FAIL;
+		
+	}
 
 	return S_OK;
 }
