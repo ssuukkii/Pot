@@ -230,8 +230,6 @@ CTexture * CTexture::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pConte
 		MessageBox(nullptr, Message.c_str(), L"System Message", MB_OK);
 		Safe_Release(pInstance);
 	}
-
-
 	return pInstance;
 }
 

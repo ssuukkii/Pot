@@ -59,21 +59,21 @@ void CUI_Manager::GamePlayUpdate(_float fTimeDelta)
 	}
 
 
-	if (m_pGameInstance->Key_Down(DIK_TAB))
-	{
-		if (m_bOnOption == FALSE)
-		{
-			CreateOption();
-			m_bOnOption = TRUE;
-		}
-		else
-		{
-			DestroyOption();
-			m_bOnOption = FALSE;
-		}
+	//if (m_pGameInstance->Key_Down(DIK_TAB))
+	//{
+	//	if (m_bOnOption == FALSE)
+	//	{
+	//		CreateOption();
+	//		m_bOnOption = TRUE;
+	//	}
+	//	else
+	//	{
+	//		DestroyOption();
+	//		m_bOnOption = FALSE;
+	//	}
 
 
-	}
+	//}
 }
 
 void CUI_Manager::UsingAttckBuff(CUI_Define::PLAYER_SLOT eSlotID)

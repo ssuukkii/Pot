@@ -3,7 +3,7 @@
 #include "Client_Defines.h"
 #include "Base.h"
 #include "RenderInstance.h"
-#include "Imgui_Manager.h"
+
 
 BEGIN(Engine)
 class CGameInstance;
@@ -34,7 +34,7 @@ private:
 
 	CGameInstance*				m_pGameInstance = { nullptr };
 	CRenderInstance*			m_pRenderInstance = { nullptr };
-	CImgui_Manager* m_pImgui_Manager = { nullptr };
+	class CImgui_Manager* m_pImgui_Manager = { nullptr };
 	static _bool  m_bIsLevelPrepared;
 private:
 	HRESULT Open_Level(LEVELID eStartLevelID);

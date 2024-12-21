@@ -25,15 +25,15 @@
 #include <iostream>
 
 _bool bShowImGuiWindows = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
-_bool bShowImGuiRenderTarget = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
-_bool bShowImGuiDebug_Component = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
-_bool bShowImGuiDebug_COut = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiRenderTarget = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiDebug_Component = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiDebug_COut = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
 _bool bShowImGuiLayerView = false;
 _bool bShowImGuiPlayerInput = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
 
-_bool bShowImGuiUI_TopShow = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
-_bool bShowImGuiUI_MidShow = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
-_bool bShowImGuiUI_BotShow = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiUI_TopShow = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiUI_MidShow = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiUI_BotShow = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
 
 _bool bShowImGuiSoundIsActive = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
 
@@ -69,12 +69,15 @@ HRESULT CImgui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	ImGui_ImplWin32_EnableDpiAwareness();
 
 	//IMGUI 탭 객체 생성
-	m_vecTabs.push_back(CIMGUI_Camera_Tab::Create(m_pDevice, m_pContext));
-	m_vecTabs.push_back(CIMGUI_Level_Tab::Create(m_pDevice, m_pContext));
-	m_vecTabs.push_back(CIMGUI_Animation_Tab::Create(m_pDevice, m_pContext));
-	m_vecTabs.push_back(CIMGUI_UI_Tab::Create(m_pDevice, m_pContext));
+	//m_vecTabs.push_back(CIMGUI_Camera_Tab::Create(m_pDevice, m_pContext));
+	//m_vecTabs.push_back(CIMGUI_Level_Tab::Create(m_pDevice, m_pContext));
+	//m_vecTabs.push_back(CIMGUI_Animation_Tab::Create(m_pDevice, m_pContext));
+	//m_vecTabs.push_back(CIMGUI_UI_Tab::Create(m_pDevice, m_pContext));
 	m_vecTabs.push_back(CIMGUI_Effect_Tab::Create(m_pDevice, m_pContext));
-	m_vecTabs.push_back(CIMGUI_Object_Tab::Create(m_pDevice, m_pContext));
+	//m_vecTabs.push_back(CIMGUI_Object_Tab::Create(m_pDevice, m_pContext));
+
+	m_pBackBufferSRV = m_pRenderInstance->Get_ViewPortSRV();
+	Safe_AddRef(m_pBackBufferSRV);
 
 	return S_OK;
 }
@@ -132,10 +135,112 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	
-	// Render IMGUI UI elements
-	Render_IMGUI(fTimeDelta);
+	//// Render IMGUI UI elements
+	//Render_IMGUI(fTimeDelta);
+	
+	//Render_EffectAnimationTabs(fTimeDelta);
+
+	ImGui::SetNextWindowSize(ImVec2(1920, 20));
+
+	if (ImGui::BeginMainMenuBar()) {
+		ImGui::Text("FPS : %d", m_iNumRender);
+
+		if (ImGui::BeginMenu("Render_Target")) {
+			if (ImGui::MenuItem("Render_Target", NULL, &bShowImGuiRenderTarget)) {
+				m_pRenderInstance->SetActive_RenderTarget(bShowImGuiRenderTarget);
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::Checkbox("Test_View", &bShowImGuiLayerView)) {
+			m_pRenderInstance->Show_Layer_View();
+		}
+
+		if (ImGui::BeginMenu("InputActive")) {
+			if (ImGui::MenuItem("InputActive", NULL, &bShowImGuiPlayerInput)) {
+				CGameObject* player_1P = m_pGameInstance->Get_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Character"), 0);
+				CGameObject* player_2P = m_pGameInstance->Get_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Character"), 1);
+
+				CCharacter* character_1P = static_cast<CCharacter*>(player_1P);
+				CCharacter* character_2P = static_cast<CCharacter*>(player_2P);
+
+				character_1P->Set_InputActive(!bShowImGuiPlayerInput);
+				character_2P->Set_InputActive(!bShowImGuiPlayerInput);
+			}
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMainMenuBar();
+	}
+
+	ImGui::SetNextWindowPos(ImVec2(0, 20));
+	ImGui::SetNextWindowSize(ImVec2(1920, 1080));
+
+	ImGui::Begin("Window", nullptr,
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoResize |  
+		ImGuiWindowFlags_NoMove |    
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar | 
+		ImGuiWindowFlags_NoScrollWithMouse |
+		ImGuiWindowFlags_NoBringToFrontOnFocus);
+	
+	
+	/*메뉴바는 개별로임 그냥 저장버튼 따로 빼야될듯*/
+	//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+	//ImGui::BeginChild("Menu", ImVec2(1920, 30), true);
+	////
+	//ImGui::EndChild();
+	//ImGui::PopStyleVar();
+
+	/**
+	*	메뉴바는 개별로임 그냥 저장버튼 따로 빼야될듯
+	*	서로 창크기 조절하는 기능은 여유나면 하기
+	*	밑 애니메이션창은 이펙트툴 그대로 이식 및 탭으로 나눠서 쉐이더탭까지
+	*	오른쪽밑엔 이펙트툴에서 파생된 라업룩 포지션창 같은거 조절하는창으로
+	*	오른쪽상단엔 뷰포트에 나와있는 오브젝트 나열 ( 아웃라인 추가, 피킹 세부조정 )
+	*/
+	ImGui::BeginChild("Viewport", ImVec2(1280, 720), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Image((ImTextureID)m_pBackBufferSRV, ImVec2(1280, 720));
+	ImGui::EndChild();
+
+	ImGui::SameLine();
+
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+
+	ImGui::BeginChild("RightPanel", ImVec2(1920 - 1280, 720), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+	ImGui::BeginChild("Outliner", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Text("Outliner");
+	if (ImGui::TreeNode("Scene Objects"))
+	{
+		/* 오브젝트 넣을지 말지 고민 */
+		ImGui::TreePop();
+	}
+	ImGui::EndChild();
+
+	ImGui::BeginChild("Details", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Text("Ex");
+	ImGui::Text("Name: Object 1");
+	ImGui::Text("Position: (0, 0, 0)");
+	ImGui::Text("Rotation: (0, 0, 0)");
+	ImGui::Text("Scale: (1, 1, 1)");
+	ImGui::EndChild();
+	ImGui::EndChild();
+
+	ImGui::PopStyleVar();
+
+	ImGui::BeginChild("Effect Tool", ImVec2(1920, 360), true);
+	(*m_vecTabs.begin())->Render(fTimeDelta);
+	ImGui::EndChild();
+
+	ImGui::End();
+
+	if (m_pGameInstance->Key_Down(DIK_TAB))
+		m_bisSwitchShaderTab = true;
+	
 	Render_ShaderTabs(fTimeDelta);
-	Render_EffectAnimationTabs(fTimeDelta);
 
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -388,9 +493,23 @@ void CImgui_Manager::Render_IMGUI(_float fTimeDelta)
 
 void CImgui_Manager::Render_ShaderTabs(_float fTimeDelta)
 {
+	//if (m_bisSwitchShaderTab == true)
+	//{
+	//	ImGui::SetNextWindowFocus();
+	//	m_bisSwitchShaderTab = false;
+	//	ImGui::Begin("Shader Tab", nullptr,
+	//		ImGuiWindowFlags_NoBringToFrontOnFocus |
+	//		ImGuiWindowFlags_NoFocusOnAppearing |
+	//		ImGuiWindowFlags_NoNavFocus);
+	//}
+	//else
+	//	ImGui::Begin("Shader Tab", nullptr, ImGuiWindowFlags_NoBringToFrontOnFocus);
+
+	ImGui::Begin("Shader Tab");
+
 	for (auto& tab : m_vecShader_Tabs)
 	{
-		ImGui::Begin("Shader Tab");
+		
 
 		if (/*ImGui::BeginTabItem(to_string(tab->m_iNumberId).c_str(), &tab->m_TabPick) || */tab.second->m_TabPick == true)
 		{
@@ -422,22 +541,28 @@ void CImgui_Manager::Render_ShaderTabs(_float fTimeDelta)
 			{
 				for (auto& iter : m_pCurEffectLayer->m_MixtureEffects)
 				{
-					if(tab.first == to_string(iter->m_iUnique_Index))
+					if (tab.first == to_string(iter->m_iUnique_Index))
 						tab.second->Update(fTimeDelta);
 				}
 			}
 		}
 
 
-		m_ImGuiScreen.ShaderImGuiPos = ImGui::GetWindowPos();
-		m_ImGuiScreen.ShaderImGuiSize = ImGui::GetWindowSize();
-		ImGui::End(); // 메인 창 종료
 	}
 
+
+	m_ImGuiScreen.ShaderImGuiPos = ImGui::GetWindowPos();
+	m_ImGuiScreen.ShaderImGuiSize = ImGui::GetWindowSize();
+	ImGui::End(); // 메인 창 종료
 }
 
 void CImgui_Manager::Render_EffectAnimationTabs(_float fTimeDelta)
 {
+}
+
+void CImgui_Manager::ToolViewRender()
+{
+
 }
 
 void CImgui_Manager::Free()
@@ -459,6 +584,6 @@ void CImgui_Manager::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pRenderInstance);
-
+	Safe_Release(m_pBackBufferSRV);
 	__super::Free();
 }

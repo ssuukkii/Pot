@@ -3,7 +3,7 @@
 #include "Base.h"
 #include "Client_Defines.h"
 #include "Renderer_Defines.h"
-
+#include "MainApp.h"
 #include "Effect_Layer.h"
 #include "imgui.h"
 #include "Effect.h"
@@ -86,6 +86,15 @@ private:
 	_int m_iShaderCount = { 0 };
 	_int m_iCurShaderTabIndex = { -1 };
 	_int m_iCurShaderTabId = { -1 };
+
+	CMainApp* m_pMainApp = { nullptr };
+	ID3D11ShaderResourceView* m_pBackBufferSRV = { nullptr };
+
+	_bool m_bisSwitchShaderTab = { false };
+public:
+	
+	void SetMainApp(CMainApp* pMainApp) { m_pMainApp = pMainApp; }
+	void ToolViewRender();
 private:
 	_uint						m_iNumCount = {};
 	_uint						m_iNumRender = {};

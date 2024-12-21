@@ -133,6 +133,11 @@ void CRenderInstance::Set_CurMapType(CRenderer::MAP_TYPE eType)
 	m_pRenderer->Set_CurMapType(eType);
 }
 
+ID3D11ShaderResourceView* CRenderInstance::Get_ViewPortSRV()
+{
+	return m_pRenderer->Get_ViewPortSRV();
+}
+
 HRESULT CRenderInstance::Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor)
 {
 	return m_pTarget_Manager->Add_RenderTarget(strTargetTag, iWidth, iHeight, ePixelFormat, vClearColor);

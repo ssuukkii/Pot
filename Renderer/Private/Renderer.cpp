@@ -102,7 +102,7 @@ HRESULT CRenderer::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 
 	_float offsetY = 18.f;
 #ifdef _DEBUG
-	if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Player_AuraMask"), 100.f, 100.f + offsetY, 200.0f, 200.0f)))
+	if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_ToolViewPort"), 100.f, 100.f + offsetY, 200.0f, 200.0f)))
 		return E_FAIL;
 	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_StageDepth"), 100.f, 300.f, 200.0f, 200.0f)))
 	//	return E_FAIL;
@@ -245,9 +245,11 @@ HRESULT CRenderer::Draw(_float fTimeDelta)
 	if (FAILED(Draw_Test_PostProcess(fTimeDelta)))
 		return E_FAIL;
 
-	/* 맵을 어둡게 할려고 여기 호출하지만 캐릭터는*/
+	///* 맵을 어둡게 할려고 여기 호출하지만 캐릭터는*/
 	if (FAILED(Draw_MapBlackOut(fTimeDelta)))
 		return E_FAIL;
+	
+
 	if (FAILED(Render_Player(fTimeDelta)))
 		return E_FAIL;
 
@@ -279,14 +281,19 @@ HRESULT CRenderer::Draw(_float fTimeDelta)
 		return E_FAIL;
 	if (FAILED(Render_Glow_UI(fTimeDelta)))
 		return E_FAIL;
+
 	if (FAILED(Render_AllGlow_Effect(fTimeDelta)))
 		return E_FAIL;
+
+
 	if (FAILED(Render_CutScene_Pri_Effect(fTimeDelta)))
 		return E_FAIL;
 	if (FAILED(Render_CutScene_Object(fTimeDelta)))
 		return E_FAIL;
 	if (FAILED(Render_CutScene_Late_Effect(fTimeDelta)))
 		return E_FAIL;
+
+	//
 
 	if (FAILED(Draw_AllBlackOut(fTimeDelta)))
 		return E_FAIL;
@@ -299,10 +306,14 @@ HRESULT CRenderer::Draw(_float fTimeDelta)
 	//	return E_FAIL;
 
 
+	if (FAILED(Render_ToolViewPort(fTimeDelta)))
+		return E_FAIL;
 #ifdef _DEBUG
 	if (FAILED(Render_Debug(fTimeDelta)))
 		return E_FAIL;
 #endif
+
+
 	return S_OK;
 }
 
@@ -412,6 +423,11 @@ void CRenderer::Create_HitDistortion(_float4 vPlayerPos, _float3 vDir, _float2 v
 		}
 	}
 
+}
+
+ID3D11ShaderResourceView* CRenderer::Get_ViewPortSRV()
+{
+	return m_pRenderInstance->Copy_RenderTarget_SRV(TEXT("Target_ToolViewPort"));
 }
 
 HRESULT CRenderer::Render_Priority(_float fTimeDelta)
@@ -1689,6 +1705,35 @@ HRESULT CRenderer::Render_Node(_float fTimeDelta)
 	return S_OK;
 }
 
+HRESULT CRenderer::Render_ToolViewPort(_float fTimeDelta)
+{
+	if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_ToolViewPort"))))
+		return E_FAIL;
+
+	if (FAILED(m_pDistortionShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pDistortionShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pDistortionShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	//if (FAILED(m_pRenderInstance->Bind_RT_ShaderResource(m_pDistortionShaderCom, "g_Texture", TEXT("Target_Distortion"))))
+	//	return E_FAIL;
+
+	if (FAILED(m_pDistortionShaderCom->Bind_ShaderResourceView("g_Texture", m_pBackBufferSRV)))
+		return E_FAIL;
+
+	m_pDistortionShaderCom->Begin(2);
+	m_pVIBuffer->Bind_Buffers();
+	m_pVIBuffer->Render();
+
+	if (FAILED(m_pRenderInstance->End_MRT()))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
 HRESULT CRenderer::Render_Distortion(_float fTimeDelta)
 {
 	if (NULL == m_Distortions.size())
@@ -1847,7 +1892,7 @@ HRESULT CRenderer::Render_Debug(_float fTimeDelta)
 
 		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_BloomDiffuse"), m_pShader, m_pVIBuffer)))
 		//	return E_FAIL;
-		if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_Player"), m_pShader, m_pVIBuffer)))
+		if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_ToolViewPort"), m_pShader, m_pVIBuffer)))
 			return E_FAIL;
 		/*if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_ShadowObjects"), m_pShader, m_pVIBuffer)))
 			return E_FAIL;*/
@@ -2049,6 +2094,7 @@ HRESULT CRenderer::Draw_AllWhiteOut(_float fTimeDelta)
 
 HRESULT CRenderer::Draw_MapBlackOut(_float fTimeDelta)
 {
+
 	if (m_fAccBlackTime == 0.f && m_isStartBlackOut == false)
 		return S_OK;
 
@@ -2868,6 +2914,12 @@ HRESULT CRenderer::Initialize_RenderTarget()
 		return E_FAIL;
 
 #pragma endregion	
+	
+	if (FAILED(m_pRenderInstance->Add_RenderTarget(TEXT("Target_ToolViewPort"), ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+		return E_FAIL;
+	if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_ToolViewPort"), TEXT("Target_ToolViewPort"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
