@@ -10,6 +10,10 @@ CIMGUI_Level_Tab::CIMGUI_Level_Tab(ID3D11Device* pDevice, ID3D11DeviceContext* p
 {
 }
 
+void CIMGUI_Level_Tab::Effect_Transform()
+{
+}
+
 HRESULT CIMGUI_Level_Tab::Initialize()
 {
 	return S_OK;

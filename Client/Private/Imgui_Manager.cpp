@@ -221,11 +221,12 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 	ImGui::EndChild();
 
 	ImGui::BeginChild("Details", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-	ImGui::Text("Ex");
-	ImGui::Text("Name: Object 1");
-	ImGui::Text("Position: (0, 0, 0)");
-	ImGui::Text("Rotation: (0, 0, 0)");
-	ImGui::Text("Scale: (1, 1, 1)");
+	//ImGui::Text("Ex");
+	//ImGui::Text("Name: Object 1");
+	//ImGui::Text("Position: (0, 0, 0)");
+	//ImGui::Text("Rotation: (0, 0, 0)");
+	//ImGui::Text("Scale: (1, 1, 1)");
+	(*m_vecTabs.begin())->Effect_Transform();
 	ImGui::EndChild();
 	ImGui::EndChild();
 

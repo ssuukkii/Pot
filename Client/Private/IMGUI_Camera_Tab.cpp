@@ -15,6 +15,10 @@ CIMGUI_Camera_Tab::CIMGUI_Camera_Tab(ID3D11Device* pDevice, ID3D11DeviceContext*
 {
 }
 
+void CIMGUI_Camera_Tab::Effect_Transform()
+{
+}
+
 HRESULT CIMGUI_Camera_Tab::Initialize()
 {
 	// 모델 이름 배열 초기화

@@ -49,6 +49,7 @@ protected:
 	virtual ~CIMGUI_Shader_Tab() = default;
 	
 public:
+	virtual void Effect_Transform() override;
 	HRESULT Initialize() override;
 	HRESULT Load_Initialize(string strFilename);
 
