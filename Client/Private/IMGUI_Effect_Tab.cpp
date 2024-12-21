@@ -1326,7 +1326,7 @@ void CIMGUI_Effect_Tab::Render_For_Effect_Color()
         {
              pEffect->m_bIsBillboarding = bIsBillboarding;
         }
-        ImGui::Text("BackSidePlayer: ");
+        ImGui::Text("BackSidePlayer: "); 
         ImGui::SameLine();
 
         if (ImGui::Checkbox("##bIsBackSideEffect", &bIsBackSideEffect))
