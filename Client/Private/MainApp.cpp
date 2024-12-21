@@ -73,22 +73,22 @@ HRESULT CMainApp::Render(_float fTimeDelta)
 
 	_bool isOk_Render = currentLevel_Index != (_uint)LEVEL_LOADING && (_uint)currentLevel_Index != LEVEL_LOGO;
 
-	if (isOk_Render == false)
-	{
+	//if (isOk_Render == false)
+	//{
 		m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 1.f));
 		m_pGameInstance->Clear_DepthStencil_View();
-	}
+	//}
 	//레벨매니저 렌더는 게임인스턴스
 	m_pGameInstance->Render_Engine(fTimeDelta);
 
 	//나머지 렌더는 렌더인스턴스
 	m_pRenderInstance->Render_Engine(fTimeDelta);
 
-	if (isOk_Render == true)
-	{
-		m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 1.f));
-		m_pGameInstance->Clear_DepthStencil_View();
-	}
+	//if (isOk_Render == true)
+	//{
+	//	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 1.f));
+	//	m_pGameInstance->Clear_DepthStencil_View();
+	//}
 
 	if (isOk_Render && m_pImgui_Manager != nullptr)
 		m_pImgui_Manager->Render(fTimeDelta);

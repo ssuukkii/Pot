@@ -246,8 +246,8 @@ HRESULT CRenderer::Draw(_float fTimeDelta)
 		return E_FAIL;
 
 	///* 맵을 어둡게 할려고 여기 호출하지만 캐릭터는*/
-	//if (FAILED(Draw_MapBlackOut(fTimeDelta)))
-	//	return E_FAIL;
+	if (FAILED(Draw_MapBlackOut(fTimeDelta)))
+		return E_FAIL;
 	
 
 	if (FAILED(Render_Player(fTimeDelta)))
@@ -274,26 +274,24 @@ HRESULT CRenderer::Draw(_float fTimeDelta)
 		return E_FAIL;
 
 
-	//if (FAILED(Render_MultyGlow_UI(fTimeDelta)))
-	//	return E_FAIL;
+	if (FAILED(Render_MultyGlow_UI(fTimeDelta)))
+		return E_FAIL;
 
-	//if (FAILED(Render_UI(fTimeDelta)))
-	//	return E_FAIL;
-	//if (FAILED(Render_Glow_UI(fTimeDelta)))
-	//	return E_FAIL;
+	if (FAILED(Render_UI(fTimeDelta)))
+		return E_FAIL;
+	if (FAILED(Render_Glow_UI(fTimeDelta)))
+		return E_FAIL;
 
 	if (FAILED(Render_AllGlow_Effect(fTimeDelta)))
 		return E_FAIL;
 
-	if (FAILED(Render_ToolViewPort(fTimeDelta)))
-		return E_FAIL;
 
-	//if (FAILED(Render_CutScene_Pri_Effect(fTimeDelta)))
-	//	return E_FAIL;
-	//if (FAILED(Render_CutScene_Object(fTimeDelta)))
-	//	return E_FAIL;
-	//if (FAILED(Render_CutScene_Late_Effect(fTimeDelta)))
-	//	return E_FAIL;
+	if (FAILED(Render_CutScene_Pri_Effect(fTimeDelta)))
+		return E_FAIL;
+	if (FAILED(Render_CutScene_Object(fTimeDelta)))
+		return E_FAIL;
+	if (FAILED(Render_CutScene_Late_Effect(fTimeDelta)))
+		return E_FAIL;
 
 	//
 
@@ -307,7 +305,9 @@ HRESULT CRenderer::Draw(_float fTimeDelta)
 	//if (FAILED(Draw_Test_PostProcess(fTimeDelta)))
 	//	return E_FAIL;
 
-	
+
+	if (FAILED(Render_ToolViewPort(fTimeDelta)))
+		return E_FAIL;
 #ifdef _DEBUG
 	if (FAILED(Render_Debug(fTimeDelta)))
 		return E_FAIL;
@@ -1882,7 +1882,7 @@ HRESULT CRenderer::Render_Debug(_float fTimeDelta)
 	}
 
 	// Render Target 관련 처리
-	//if (m_bShow_RenderTarget)
+	if (m_bShow_RenderTarget)
 	{
 		// Matrix 바인딩
 		if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
@@ -2094,7 +2094,7 @@ HRESULT CRenderer::Draw_AllWhiteOut(_float fTimeDelta)
 
 HRESULT CRenderer::Draw_MapBlackOut(_float fTimeDelta)
 {
-	return S_OK;
+
 	if (m_fAccBlackTime == 0.f && m_isStartBlackOut == false)
 		return S_OK;
 

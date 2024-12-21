@@ -90,6 +90,7 @@ private:
 	CMainApp* m_pMainApp = { nullptr };
 	ID3D11ShaderResourceView* m_pBackBufferSRV = { nullptr };
 
+	_bool m_bisSwitchShaderTab = { false };
 public:
 	
 	void SetMainApp(CMainApp* pMainApp) { m_pMainApp = pMainApp; }
