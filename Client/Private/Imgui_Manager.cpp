@@ -140,9 +140,11 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 	
 	//Render_EffectAnimationTabs(fTimeDelta);
 
+	Render_ShaderTabs(fTimeDelta);
+
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(ImVec2(1920, 1080));
-	
+
 	ImGui::Begin("Window", nullptr,
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoResize |  
@@ -150,7 +152,7 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 		ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar | 
 		ImGuiWindowFlags_NoScrollWithMouse);
-	Render_ShaderTabs(fTimeDelta);
+	
 	
 	/*메뉴바는 개별로임 그냥 저장버튼 따로 빼야될듯*/
 	//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
@@ -455,9 +457,11 @@ void CImgui_Manager::Render_IMGUI(_float fTimeDelta)
 
 void CImgui_Manager::Render_ShaderTabs(_float fTimeDelta)
 {
-	ImGui::BeginTabItem("Shader Tab");
+	//ImGui::BeginTabItem("Shader Tab");
 	for (auto& tab : m_vecShader_Tabs)
 	{
+		//ImGui::SetNextWindowFlags(ImGuiWindowFlags_TopMost);
+
 		ImGui::Begin("Shader Tab");
 		
 		if (/*ImGui::BeginTabItem(to_string(tab->m_iNumberId).c_str(), &tab->m_TabPick) || */tab.second->m_TabPick == true)
