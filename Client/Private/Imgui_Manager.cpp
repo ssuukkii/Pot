@@ -137,7 +137,7 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 	
 	//// Render IMGUI UI elements
 	//Render_IMGUI(fTimeDelta);
-	//Render_ShaderTabs(fTimeDelta);
+	
 	//Render_EffectAnimationTabs(fTimeDelta);
 
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
@@ -150,7 +150,7 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 		ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar | 
 		ImGuiWindowFlags_NoScrollWithMouse);
-	
+	Render_ShaderTabs(fTimeDelta);
 	
 	/*메뉴바는 개별로임 그냥 저장버튼 따로 빼야될듯*/
 	//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
@@ -181,7 +181,7 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 	ImGui::Text("Outliner");
 	if (ImGui::TreeNode("Scene Objects"))
 	{
-
+		/* 오브젝트 넣을지 말지 고민 */
 		ImGui::TreePop();
 	}
 	ImGui::EndChild();
@@ -193,27 +193,14 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 	ImGui::Text("Rotation: (0, 0, 0)");
 	ImGui::Text("Scale: (1, 1, 1)");
 	ImGui::EndChild();
-
 	ImGui::EndChild();
 
 	ImGui::PopStyleVar();
 
-	//ImGui::BeginChild("AnimationBar", ImVec2(1920, 360), true);
-	if (ImGui::BeginTabBar("DragonBall_Tool")) { // 탭 바 시작
+	ImGui::BeginChild("Effect Tool", ImVec2(1920, 360), true);
+	(*m_vecTabs.begin())->Render(fTimeDelta);
+	ImGui::EndChild();
 
-		for (auto& tab : m_vecTabs)
-		{
-			if (ImGui::BeginTabItem(tab->GetTabName()))
-			{
-				tab->Render(fTimeDelta);
-				ImGui::EndTabItem();
-			}
-		}
-		Render_ShaderTabs(fTimeDelta);
-
-		ImGui::EndTabBar(); // 탭 바 종료
-	}
-	//ImGui::EndChild();
 
 	ImGui::End();
 
@@ -471,7 +458,7 @@ void CImgui_Manager::Render_ShaderTabs(_float fTimeDelta)
 	ImGui::BeginTabItem("Shader Tab");
 	for (auto& tab : m_vecShader_Tabs)
 	{
-		//ImGui::Begin("Shader Tab");
+		ImGui::Begin("Shader Tab");
 		
 		if (/*ImGui::BeginTabItem(to_string(tab->m_iNumberId).c_str(), &tab->m_TabPick) || */tab.second->m_TabPick == true)
 		{
@@ -513,13 +500,12 @@ void CImgui_Manager::Render_ShaderTabs(_float fTimeDelta)
 			}
 		}
 
+		m_ImGuiScreen.ShaderImGuiPos = ImGui::GetWindowPos();
+		m_ImGuiScreen.ShaderImGuiSize = ImGui::GetWindowSize();
+		ImGui::End();
 	
-		//ImGui::End();
-		
 	}
-	ImGui::EndTabItem(); // 메인 창 종료
-	//m_ImGuiScreen.ShaderImGuiPos = ImGui::GetWindowPos();
-	//m_ImGuiScreen.ShaderImGuiSize = ImGui::GetWindowSize();
+	//ImGui::EndTabItem(); // 메인 창 종료
 }
 
 void CImgui_Manager::Render_EffectAnimationTabs(_float fTimeDelta)
