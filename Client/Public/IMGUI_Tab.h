@@ -25,6 +25,8 @@ protected:
 public:
 	virtual HRESULT Initialize() = 0;
 	virtual void Render(_float fTimeDelta) = 0;
+
+	virtual void Effect_Transform() = 0;
 public:
 	virtual const _char* GetTabName() const = 0;
 	virtual void Free();
