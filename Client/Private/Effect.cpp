@@ -74,7 +74,7 @@ HRESULT CEffect::Priority_Render(_float fTimeDelta)
 
 HRESULT CEffect::Render(_float fTimeDelta)
 {
-
+	
 	
 	return S_OK;
 }
@@ -292,7 +292,7 @@ CGameObject* CEffect::Clone(void* pArg)
 void CEffect::Free()
 {
 	__super::Free();
-
+	Safe_Release(m_pTestTextureCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pDiffuseTextureCom);

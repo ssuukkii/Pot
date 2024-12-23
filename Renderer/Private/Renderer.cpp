@@ -207,105 +207,122 @@ HRESULT CRenderer::Draw(_float fTimeDelta)
 {
 	if (FAILED(Render_Node(fTimeDelta)))
 		return E_FAIL;
+	
 	/*-----------------디버깅용------------------*/
 	if (FAILED(Render_NonBlend_Test(fTimeDelta)))
 		return E_FAIL;
 	if (FAILED(Render_NonBlend_Layer(fTimeDelta)))
 		return E_FAIL;
 	/*-------------------------------------------*/
-	if (FAILED(Render_StageDepth(fTimeDelta)))
-		return E_FAIL;
 
-	if (FAILED(Render_Priority(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Glow_Priority(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Blend_Priority(fTimeDelta)))
-		return E_FAIL;
-	/*----------------- 플레이어가 아닌 다른 오브젝트 -----------------*/
-	if (FAILED(Render_ShadowObj(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Map(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_NonBlend(fTimeDelta)))
-		return E_FAIL;
+	if (m_isLayerView == true)
+	{
+		if (FAILED(Render_StageDepth(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Render_Lights(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Deferred(fTimeDelta)))
-		return E_FAIL;
-	/*-----------------------------------------------------------------*/
+		if (FAILED(Render_Priority(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Glow_Priority(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Blend_Priority(fTimeDelta)))
+			return E_FAIL;
+		/*----------------- 플레이어가 아닌 다른 오브젝트 -----------------*/
+		if (FAILED(Render_ShadowObj(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Map(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_NonBlend(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Render_NonLight(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_Lights(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Deferred(fTimeDelta)))
+			return E_FAIL;
+		/*-----------------------------------------------------------------*/
 
-	if (FAILED(Render_Metallic(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_NonLight(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Draw_Test_PostProcess(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_Metallic(fTimeDelta)))
+			return E_FAIL;
 
-	///* 맵을 어둡게 할려고 여기 호출하지만 캐릭터는*/
-	if (FAILED(Draw_MapBlackOut(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Draw_Test_PostProcess(fTimeDelta)))
+			return E_FAIL;
+
+		///* 맵을 어둡게 할려고 여기 호출하지만 캐릭터는*/
+		if (FAILED(Draw_MapBlackOut(fTimeDelta)))
+			return E_FAIL;
 	
 
-	if (FAILED(Render_Player(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_Player(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Render_StageDeferred(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_StageDeferred(fTimeDelta)))
+			return E_FAIL;
 
-	/* 여기서 그리고 있음 이펙트를 위한 행동 하지만 위에서 블러를 먹인 그림을 가지고만 있고 그리진 않아서 영향이 안가짐 */
-	if (FAILED(Render_AllGlow_Effect_BackSide(fTimeDelta)))
-		return E_FAIL;
+		/* 여기서 그리고 있음 이펙트를 위한 행동 하지만 위에서 블러를 먹인 그림을 가지고만 있고 그리진 않아서 영향이 안가짐 */
+		if (FAILED(Render_AllGlow_Effect_BackSide(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Render_NonLight_Effect(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_AllGlow_Effect_Pri(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Blend(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Glow(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_NonLight_Effect(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_AllGlow_Effect_Pri(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Blend(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Glow(fTimeDelta)))
+			return E_FAIL;
 	
-	/* 맵이 어두워진 상태에서 디스토션하는게 자연스러운가? 테스트 필요 */
-	if (FAILED(Render_Distortion(fTimeDelta)))
-		return E_FAIL;
+		/* 맵이 어두워진 상태에서 디스토션하는게 자연스러운가? 테스트 필요 */
+		if (FAILED(Render_Distortion(fTimeDelta)))
+			return E_FAIL;
 
 
-	if (FAILED(Render_MultyGlow_UI(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_MultyGlow_UI(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Render_UI(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Glow_UI(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_UI(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Glow_UI(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Render_AllGlow_Effect(fTimeDelta)))
-		return E_FAIL;
-
-
-	if (FAILED(Render_CutScene_Pri_Effect(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_CutScene_Object(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_CutScene_Late_Effect(fTimeDelta)))
-		return E_FAIL;
-
-	//
-
-	if (FAILED(Draw_AllBlackOut(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Draw_WhiteBlack_Mode(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Draw_AllWhiteOut(fTimeDelta)))
-		return E_FAIL;
-
-	//if (FAILED(Draw_Test_PostProcess(fTimeDelta)))
-	//	return E_FAIL;
+		if (FAILED(Render_AllGlow_Effect(fTimeDelta)))
+			return E_FAIL;
 
 
+		if (FAILED(Render_CutScene_Pri_Effect(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_CutScene_Object(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_CutScene_Late_Effect(fTimeDelta)))
+			return E_FAIL;
+
+		//
+
+		if (FAILED(Draw_AllBlackOut(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Draw_WhiteBlack_Mode(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Draw_AllWhiteOut(fTimeDelta)))
+			return E_FAIL;
+
+		//if (FAILED(Draw_Test_PostProcess(fTimeDelta)))
+		//	return E_FAIL;
+	}
+	else
+	{
+		if (FAILED(Render_TestEffect(fTimeDelta)))
+			return E_FAIL;
+
+		for (_int i = 0; i < RG_END; i++)
+		{
+			for (auto& pRenderObject : m_RenderObjects[i])
+				Safe_Release(pRenderObject);
+
+			m_RenderObjects[i].clear();
+		}
+	}
+		
 	if (FAILED(Render_ToolViewPort(fTimeDelta)))
 		return E_FAIL;
 #ifdef _DEBUG
@@ -1136,25 +1153,26 @@ HRESULT CRenderer::Render_NonBlend_Test(_float fTimeDelta)
 
 		return S_OK;
 	}
-
-	/* Diffuse + Normal */
-	if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_EffectToolPick"))))
-		return E_FAIL;
-
-	for (auto& pRenderObject : m_RenderObjects[RG_NONBLEND_TEST])
+	else
 	{
-		if (nullptr != pRenderObject)
-			pRenderObject->Render(fTimeDelta);
+		if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_EffectToolPick"))))
+			return E_FAIL;
 
-		Safe_Release(pRenderObject);
+		for (auto& pRenderObject : m_RenderObjects[RG_NONBLEND_TEST])
+		{
+			if (nullptr != pRenderObject)
+				pRenderObject->Render(fTimeDelta);
+
+			Safe_Release(pRenderObject);
+		}
+
+		m_RenderObjects[RG_NONBLEND_TEST].clear();
+
+		if (FAILED(m_pRenderInstance->End_MRT()))
+			return E_FAIL;
+
+		return S_OK;
 	}
-
-	m_RenderObjects[RG_NONBLEND_TEST].clear();
-
-	if (FAILED(m_pRenderInstance->End_MRT()))
-		return E_FAIL;
-
-	return S_OK;
 }
 
 HRESULT CRenderer::Render_NonBlend_Layer(_float fTimeDelta)
@@ -2692,6 +2710,21 @@ HRESULT CRenderer::Draw_WhiteBlack_Mode(_float fTimeDelta)
 	m_pShader->Begin(10);
 	m_pVIBuffer->Bind_Buffers();
 	m_pVIBuffer->Render();
+}
+
+HRESULT CRenderer::Render_TestEffect(_float fTimeDelta)
+{
+	for (auto& pRenderObject : m_RenderObjects[RG_TESTEFFECT])
+	{
+		if (nullptr != pRenderObject)
+			pRenderObject->Render(fTimeDelta);
+
+		//Safe_Release(pRenderObject);
+	}
+
+	//m_RenderObjects[RG_TESTEFFECT].clear();
+
+	return S_OK;
 }
 
 HRESULT CRenderer::Initialize_RenderTarget()

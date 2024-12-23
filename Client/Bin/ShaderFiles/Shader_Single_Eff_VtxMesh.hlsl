@@ -148,7 +148,8 @@ PS_OUT PS_MAIN_ALPHABLEND_EFFECT(PS_IN In)
             vMtrlDiffuse.a = fAlpha;
         }
         
-        Out.vDiffuse = vMtrlDiffuse;
+    //Out.vDiffuse = vector(1.f, 1.f, 1.f, 1.f);
+    Out.vDiffuse = vMtrlDiffuse;
         Out.vAlpha = vector(0.f, 0.f, 0.f, 1.f);
         Out.vDepth = vector(In.vProjPos.w / 1000.f, In.vProjPos.z / In.vProjPos.w, g_iUnique_Index, 0.f);
 
