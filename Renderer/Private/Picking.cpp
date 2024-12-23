@@ -100,7 +100,8 @@ _int CPicking::Picked_Effect_Index()
 	POINT		ptMouse{};
 
 	GetCursorPos(&ptMouse);
-
+	ptMouse.x = (_float)ptMouse.x * 1.5f - 10.f;
+	ptMouse.y = (_float)ptMouse.y * 1.5f - 50.f;
 	ScreenToClient(m_hWnd, &ptMouse);
 
 	/* Target_PickDepth렌더타겟을 미리 만들어놓은 텍스쳐에 복사한다. */

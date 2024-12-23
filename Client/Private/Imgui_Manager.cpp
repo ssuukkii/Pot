@@ -25,8 +25,8 @@
 #include <iostream>
 
 _bool bShowImGuiWindows = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
-_bool bShowImGuiRenderTarget = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
-_bool bShowImGuiDebug_Component = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiRenderTarget = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
+_bool bShowImGuiDebug_Component = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
 _bool bShowImGuiDebug_COut = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
 _bool bShowImGuiLayerView = false;
 _bool bShowImGuiPlayerInput = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
@@ -333,6 +333,26 @@ _int CImgui_Manager::Pick_Effect_Mesh()
 
 
 	return isPick;
+}
+
+void CImgui_Manager::Click_EffectToShaderTab(_uint iMeshIndex)
+{
+	if (iMeshIndex != -1)
+	{
+		_int iCount = 0;
+		for (auto& tab : m_vecShader_Tabs)
+		{
+			if (tab.second->m_iNumberId == iMeshIndex)
+			{
+				tab.second->m_TabPick = true;
+				tab.second->TabPos_Init();
+			}
+			else
+				tab.second->m_TabPick = false;
+
+			iCount++;
+		}
+	}
 }
 
 void CImgui_Manager::Render_IMGUI(_float fTimeDelta)

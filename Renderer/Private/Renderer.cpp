@@ -102,8 +102,12 @@ HRESULT CRenderer::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 
 	_float offsetY = 18.f;
 #ifdef _DEBUG
-	if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_ToolViewPort"), 100.f, 100.f + offsetY, 200.0f, 200.0f)))
+	if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_PickDepth"), 100.f, 100.f + offsetY, 200.0f, 200.0f)))
 		return E_FAIL;
+	
+
+	/*if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_ToolViewPort"), 100.f, 100.f + offsetY, 200.0f, 200.0f)))
+		return E_FAIL;*/
 	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_StageDepth"), 100.f, 300.f, 200.0f, 200.0f)))
 	//	return E_FAIL;
 
@@ -323,12 +327,12 @@ HRESULT CRenderer::Draw(_float fTimeDelta)
 		}
 	}
 		
-	if (FAILED(Render_ToolViewPort(fTimeDelta)))
-		return E_FAIL;
 #ifdef _DEBUG
 	if (FAILED(Render_Debug(fTimeDelta)))
 		return E_FAIL;
 #endif
+	if (FAILED(Render_ToolViewPort(fTimeDelta)))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -1908,10 +1912,13 @@ HRESULT CRenderer::Render_Debug(_float fTimeDelta)
 		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 			return E_FAIL;
 
+		if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_EffectToolPick"), m_pShader, m_pVIBuffer)))
+			return E_FAIL;
+
 		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_BloomDiffuse"), m_pShader, m_pVIBuffer)))
 		//	return E_FAIL;
-		if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_ToolViewPort"), m_pShader, m_pVIBuffer)))
-			return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_ToolViewPort"), m_pShader, m_pVIBuffer)))
+		//	return E_FAIL;
 		/*if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_ShadowObjects"), m_pShader, m_pVIBuffer)))
 			return E_FAIL;*/
 
