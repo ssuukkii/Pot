@@ -611,7 +611,7 @@ void CIMGUI_Effect_Tab::Effect_Menu()
         Save_Selected_Effects_File();
     }
 
-    ImGui::SameLine();
+   // ImGui::SameLine();
 
     if (CurrentEffect == 0)
     {
