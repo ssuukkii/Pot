@@ -536,9 +536,9 @@ void CImgui_Manager::Render_ShaderTabs(_float fTimeDelta)
 			ImGui::Text("Mesh Index : %d", tab.second->m_iNumberId);
 			m_iCurShaderTabId = tab.second->m_iNumberId;
 
-			ImGui::SameLine();
-			if (ImGui::Button("Out_Line"))
-				m_pRenderInstance->Show_OutLine();
+			//ImGui::SameLine();
+			//if (ImGui::Button("Out_Line"))
+			//	m_pRenderInstance->Show_OutLine();
 			if (tab.second->m_TabPick == false)
 			{
 				tab.second->TabPos_Init();
