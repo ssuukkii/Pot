@@ -27,6 +27,10 @@ CIMGUI_Animation_Tab::CIMGUI_Animation_Tab(ID3D11Device* pDevice, ID3D11DeviceCo
 
 //static FrameEventMap FrameEvent;// [CHARACTER_INDEX_END] [100] [2] ;
 
+void CIMGUI_Animation_Tab::Effect_Menu()
+{
+}
+
 void CIMGUI_Animation_Tab::Effect_Transform()
 {
 }

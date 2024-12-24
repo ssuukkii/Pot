@@ -18,6 +18,10 @@ void CIMGUI_UI_Tab::Render(_float fTimeDelta)
 {
 }
 
+void CIMGUI_UI_Tab::Effect_Menu()
+{
+}
+
 void CIMGUI_UI_Tab::Effect_Transform()
 {
 }

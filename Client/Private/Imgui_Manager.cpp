@@ -212,20 +212,10 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 	ImGui::BeginChild("RightPanel", ImVec2(1920 - 1280, 720), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
 	ImGui::BeginChild("Outliner", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-	ImGui::Text("Outliner");
-	if (ImGui::TreeNode("Scene Objects"))
-	{
-		/* 오브젝트 넣을지 말지 고민 */
-		ImGui::TreePop();
-	}
+	(*m_vecTabs.begin())->Effect_Menu();
 	ImGui::EndChild();
 
-	ImGui::BeginChild("Details", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-	//ImGui::Text("Ex");
-	//ImGui::Text("Name: Object 1");
-	//ImGui::Text("Position: (0, 0, 0)");
-	//ImGui::Text("Rotation: (0, 0, 0)");
-	//ImGui::Text("Scale: (1, 1, 1)");
+	ImGui::BeginChild("Details", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
 	(*m_vecTabs.begin())->Effect_Transform();
 	ImGui::EndChild();
 	ImGui::EndChild();

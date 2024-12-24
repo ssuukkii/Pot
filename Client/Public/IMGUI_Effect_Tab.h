@@ -18,6 +18,7 @@ public:
 	void Save_To_Effect_Layer(_uint iCurTestEffectIndex, const wstring& strEffectLayerTag, void* pArg = nullptr);
 
 	virtual void Effect_Transform() override;
+	virtual void Effect_Menu() override;
 
 	HRESULT Save_Selected_Effects_File();
 	HRESULT Save_All_Effects_File();

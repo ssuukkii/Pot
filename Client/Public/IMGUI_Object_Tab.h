@@ -17,6 +17,7 @@ protected:
 	virtual ~CIMGUI_Object_Tab() = default;
 
 public:
+	virtual void Effect_Menu() override;
 	virtual void Effect_Transform() override;
 	HRESULT Initialize() override;
 	void Render(_float fTimeDelta) override;

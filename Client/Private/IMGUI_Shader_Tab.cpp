@@ -31,6 +31,10 @@ CIMGUI_Shader_Tab::CIMGUI_Shader_Tab(ID3D11Device* pDevice, ID3D11DeviceContext*
 }
 
 
+void CIMGUI_Shader_Tab::Effect_Menu()
+{
+}
+
 void CIMGUI_Shader_Tab::Effect_Transform()
 {
 }

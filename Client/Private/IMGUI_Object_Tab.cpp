@@ -13,6 +13,10 @@ CIMGUI_Object_Tab::CIMGUI_Object_Tab(ID3D11Device* pDevice, ID3D11DeviceContext*
 {
 }
 
+void CIMGUI_Object_Tab::Effect_Menu()
+{
+}
+
 void CIMGUI_Object_Tab::Effect_Transform()
 {
 }

@@ -15,6 +15,7 @@ public:
 	HRESULT Initialize() override;
 	void Render(_float fTimeDelta) override;
 
+	virtual void Effect_Menu() override;
 	virtual void Effect_Transform() override;
 	virtual const _char* GetTabName() const { return "UI"; };
 
