@@ -39,6 +39,10 @@ void CIMGUI_Shader_Tab::Effect_Transform()
 {
 }
 
+void CIMGUI_Shader_Tab::Camera_Set(_uint iNumCameraModel)
+{
+}
+
 HRESULT CIMGUI_Shader_Tab::Initialize()
 {
     DragAcceptFiles(g_hWnd, TRUE);

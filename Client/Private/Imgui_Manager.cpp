@@ -75,6 +75,7 @@ HRESULT CImgui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	//m_vecTabs.push_back(CIMGUI_UI_Tab::Create(m_pDevice, m_pContext));
 	m_vecTabs.push_back(CIMGUI_Effect_Tab::Create(m_pDevice, m_pContext));
 	//m_vecTabs.push_back(CIMGUI_Object_Tab::Create(m_pDevice, m_pContext));
+	m_vecTabs.push_back(CIMGUI_Camera_Tab::Create(m_pDevice, m_pContext));
 
 	m_pBackBufferSRV = m_pRenderInstance->Get_ViewPortSRV();
 	Safe_AddRef(m_pBackBufferSRV);
@@ -206,12 +207,28 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 
 	ImGui::SameLine();
 
+	(*m_vecTabs.at(1)).Render(fTimeDelta);
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 
 	ImGui::BeginChild("RightPanel", ImVec2(1920 - 1280, 720), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
 	ImGui::BeginChild("Outliner", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+	if (ImGui::Button("Free Camera"))
+	{
+		//(*m_vecTabs.end())->Camera_Set(1);
+		(*m_vecTabs.at(1)).Camera_Set(1);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Default Camera"))
+	{
+		//(*m_vecTabs.end())->Camera_Set(0);
+		(*m_vecTabs.at(1)).Camera_Set(0);
+	}
+
+	ImGui::Separator();
+
 	(*m_vecTabs.begin())->Effect_Menu();
 	ImGui::EndChild();
 

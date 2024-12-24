@@ -31,6 +31,10 @@ void CIMGUI_Animation_Tab::Effect_Menu()
 {
 }
 
+void CIMGUI_Animation_Tab::Camera_Set(_uint iNumCameraModel)
+{
+}
+
 void CIMGUI_Animation_Tab::Effect_Transform()
 {
 }

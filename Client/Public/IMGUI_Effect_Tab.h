@@ -19,6 +19,7 @@ public:
 
 	virtual void Effect_Transform() override;
 	virtual void Effect_Menu() override;
+	virtual void Camera_Set(_uint iNumCameraModel) override;
 
 	HRESULT Save_Selected_Effects_File();
 	HRESULT Save_All_Effects_File();

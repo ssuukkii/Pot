@@ -69,6 +69,7 @@ protected:
 
 public:
     virtual void Effect_Menu() override;
+    virtual void Camera_Set(_uint iNumCameraModel) override;
     virtual void Effect_Transform() override;
 	HRESULT Initialize() override;
 	void Render(_float fTimeDelta) override;

@@ -18,6 +18,10 @@ void CIMGUI_Level_Tab::Effect_Transform()
 {
 }
 
+void CIMGUI_Level_Tab::Camera_Set(_uint iNumCameraModel)
+{
+}
+
 HRESULT CIMGUI_Level_Tab::Initialize()
 {
 	return S_OK;

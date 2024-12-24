@@ -21,6 +21,10 @@ void CIMGUI_Object_Tab::Effect_Transform()
 {
 }
 
+void CIMGUI_Object_Tab::Camera_Set(_uint iNumCameraModel)
+{
+}
+
 HRESULT CIMGUI_Object_Tab::Initialize()
 {
 	return S_OK;

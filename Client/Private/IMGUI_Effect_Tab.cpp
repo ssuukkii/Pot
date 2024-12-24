@@ -624,6 +624,10 @@ void CIMGUI_Effect_Tab::Effect_Menu()
     }
 }
 
+void CIMGUI_Effect_Tab::Camera_Set(_uint iNumCameraModel)
+{
+}
+
 HRESULT CIMGUI_Effect_Tab::Save_All_Effects_File()
 {
     const wstring folderPath = L"../Bin/Effects/Effect/";
