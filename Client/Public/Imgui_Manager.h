@@ -61,6 +61,7 @@ public:
 	_int Get_CurShaderTab_Id() { return m_iCurShaderTabId; }
 	_int Pick_Effect_Mesh();
 
+	void Click_EffectToShaderTab(_uint iMeshIndex);
 	IMGUI_SCREEN Get_Screen_Desc() {
 		return m_ImGuiScreen;
 	}

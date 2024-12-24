@@ -1837,8 +1837,12 @@ void CIMGUI_Effect_Tab::Render_For_Effect_Color()
             pEffect->m_bIsShaderLoop = bIsShaderLoop;
         }
 
+        ImGui::SameLine();
+        if (ImGui::Button("ShaderTab"))
+        {
+            CImgui_Manager::Get_Instance()->Click_EffectToShaderTab(pEffect->m_iUnique_Index);
+        }
         ImGui::End();
-
  }
 
 void CIMGUI_Effect_Tab::Render_For_Layer_Transform()

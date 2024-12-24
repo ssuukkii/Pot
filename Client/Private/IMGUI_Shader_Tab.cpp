@@ -112,30 +112,80 @@ void CIMGUI_Shader_Tab::Render(_float fTimeDelta)
       //  node_ids.push_back(nodeDesc.Sprite_node_id - 3000);
     }
 
-    ImGui::Text("Glow_Pri : Input == -2       Glow : Input > -1       NotGlow : Input == -1");
-    ImGui::SetNextItemWidth(100.0f);
     _int GameObjectData = m_pEffect->Get_GameObjectData();
     _int GlowFactor = m_pEffect->Get_ObjectRenderData(); // - (GameObjectData == -2 ? 5 : 0);
-    if (ImGui::InputInt("Glow", &GameObjectData) && isStart)
+    _bool bGlow_Pri, bGlow, bNotGlow;
+    if (GameObjectData <= -2)
     {
-        m_pEffect->Set_GameObjectData(GameObjectData);
-        if (GlowFactor < 1 || GlowFactor > 4)
-            GlowFactor = 1;
-
-        
-
+        GameObjectData = -2;  bGlow_Pri = true;   bGlow = false;   bNotGlow = false;
     }
-    if (GlowFactor > 4)
-        GlowFactor -= 5;
-    ImGui::SameLine();
-    ImGui::SetNextItemWidth(100.0f);
-    if (ImGui::InputInt("GlowFactor", &GlowFactor) && isStart)
+    else if (GameObjectData == -1)
     {
-        if (GlowFactor > -1 && GlowFactor < 5)
+        bGlow_Pri = false;   bGlow = false;   bNotGlow = true;
+    }
+    else
+    {
+        GameObjectData = 0; bGlow_Pri = false;   bGlow = true;   bNotGlow = false;
+    }
+
+    //ImGui::Text("Glow_Pri : Input == -2       Glow : Input > -1       NotGlow : Input == -1");
+    if (ImGui::Checkbox("Glow_Pri", &bGlow_Pri))
+    {
+        if (bGlow_Pri == true)
         {
-            if (GameObjectData == -2)
+            GameObjectData = -2;
+            bGlow = false;
+            bNotGlow = false;
+            if (GlowFactor < 5)
                 GlowFactor += 5;
+            m_pEffect->Set_GameObjectData(GameObjectData);
             m_pEffect->Set_ObjectRenderData(GlowFactor);
+        }
+    }
+    ImGui::SameLine();
+    if (ImGui::Checkbox("Glow", &bGlow))
+    {
+        if (bGlow == true)
+        {
+            GameObjectData = 0;
+            bGlow_Pri = false;
+            bNotGlow = false;
+            if (GlowFactor > 4)
+                GlowFactor -= 5;
+            
+            m_pEffect->Set_GameObjectData(GameObjectData);
+            m_pEffect->Set_ObjectRenderData(GlowFactor);
+        }
+    }
+    ImGui::SameLine();
+    if (ImGui::Checkbox("NotGlow", &bNotGlow))
+    {
+        if (bNotGlow == true)
+        {
+            GameObjectData = -1;
+            bGlow_Pri = false;
+            bGlow = false;
+            m_pEffect->Set_GameObjectData(GameObjectData);
+            m_pEffect->Set_ObjectRenderData(GlowFactor);
+        }
+    }
+
+    _int iInputFactor = (GlowFactor > 4 ? GlowFactor - 5 : GlowFactor);
+    ImGui::SetNextItemWidth(100.0f);
+    if (ImGui::InputInt("Glow_AddFactor", &iInputFactor) && isStart)
+    {
+        if (iInputFactor < 0 || iInputFactor > 4)
+        {
+
+        }
+        else
+        {
+            if (bGlow_Pri == true)
+                GlowFactor = iInputFactor + 5;
+            else if(bGlow == true)
+                GlowFactor = iInputFactor;
+
+             m_pEffect->Set_ObjectRenderData(GlowFactor);
         }
     }
 
