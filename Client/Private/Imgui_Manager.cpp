@@ -171,6 +171,19 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 			ImGui::EndMenu();
 		}
 
+		
+		_float fWindowWidth = ImGui::GetWindowSize().x;
+		_float fButtonWidth = 150.0f;
+		_float fCursorPosX = fWindowWidth - fButtonWidth - ImGui::GetStyle().ItemSpacing.x;
+		ImGui::SetCursorPosX(fCursorPosX);
+		if (ImGui::Button("Free Camera"))
+			(*m_vecTabs.at(1)).Camera_Set(1);
+		
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(fCursorPosX  - 150);
+		if (ImGui::Button("Default Camera"))
+			(*m_vecTabs.at(1)).Camera_Set(0);
+
 		ImGui::EndMainMenuBar();
 	}
 
@@ -186,14 +199,6 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 		ImGuiWindowFlags_NoScrollWithMouse |
 		ImGuiWindowFlags_NoBringToFrontOnFocus);
 	
-	
-	/*메뉴바는 개별로임 그냥 저장버튼 따로 빼야될듯*/
-	//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-	//ImGui::BeginChild("Menu", ImVec2(1920, 30), true);
-	////
-	//ImGui::EndChild();
-	//ImGui::PopStyleVar();
-
 	/**
 	*	메뉴바는 개별로임 그냥 저장버튼 따로 빼야될듯
 	*	서로 창크기 조절하는 기능은 여유나면 하기
@@ -215,21 +220,8 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 
 	ImGui::BeginChild("Outliner", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
-	if (ImGui::Button("Free Camera"))
-	{
-		//(*m_vecTabs.end())->Camera_Set(1);
-		(*m_vecTabs.at(1)).Camera_Set(1);
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Default Camera"))
-	{
-		//(*m_vecTabs.end())->Camera_Set(0);
-		(*m_vecTabs.at(1)).Camera_Set(0);
-	}
-
-	ImGui::Separator();
-
 	(*m_vecTabs.begin())->Effect_Menu();
+
 	ImGui::EndChild();
 
 	ImGui::BeginChild("Details", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
