@@ -19,7 +19,7 @@ HRESULT CTarget_Manager::Add_RenderTarget(const _wstring & strTargetTag, _uint i
 	if (nullptr != Find_RenderTarget(strTargetTag))
 		return E_FAIL;
 
-	CRenderTarget*		pRenderTarget = CRenderTarget::Create(m_pDevice, m_pContext, iWidth, iHeight, ePixelFormat, vClearColor);
+	CRenderTarget*		pRenderTarget = CRenderTarget::Create(m_pDevice, m_pContext, iWidth, iHeight, ePixelFormat, vClearColor, strTargetTag);
 	if (nullptr == pRenderTarget)
 		return E_FAIL;
 
@@ -146,10 +146,11 @@ HRESULT CTarget_Manager::Add_MRT(const _wstring & strMRTTag, const _wstring & st
 		MRTList.push_back(pRenderTarget);
 
 		m_MRTs.emplace(strMRTTag, MRTList);
+		m_MRTKeys.push_back(strMRTTag);
 	}
 	else	
 		pMRTList->push_back(pRenderTarget);
-
+	
 	Safe_AddRef(pRenderTarget);
 
 	return S_OK;

@@ -42,14 +42,16 @@ public:
 	HRESULT Render_Debug(const _wstring& strMRTTag, class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 #endif
 
-
+	map<const _wstring, list<class CRenderTarget*>>* Get_MRTs() { return &m_MRTs; }
+	vector<_wstring>* Get_MRTKeys() { return &m_MRTKeys; }
+	
 private:
 	ID3D11Device*								m_pDevice = { nullptr };
 	ID3D11DeviceContext*						m_pContext = { nullptr };	
 
 	map<const _wstring, class CRenderTarget*>		m_RenderTargets;
 	map<const _wstring, list<class CRenderTarget*>>	m_MRTs;
-
+	vector<_wstring> m_MRTKeys;
 	_uint m_iBeginEffectCountArray[10] = { 0,0,0,0,0,0,0,0,0,0 };
 private:
 	ID3D11RenderTargetView*						m_pOldRTV = { nullptr };

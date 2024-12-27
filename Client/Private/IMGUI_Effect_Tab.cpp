@@ -600,7 +600,7 @@ void CIMGUI_Effect_Tab::Effect_Menu()
 
     ImGui::SameLine();
 
-    ImGui::SetNextItemWidth(200.0f); // 200 픽셀로 너비 설정
+    ImGui::SetNextItemWidth(20.0f); // 200 픽셀로 너비 설정
     //static char EffectNameBuffer[128] = "";
     //ImGui::InputText("File Name", EffectNameBuffer, IM_ARRAYSIZE(EffectNameBuffer));
 

@@ -286,7 +286,7 @@ HRESULT COpening_Kririn::Render(_float fTimeDelta)
 return E_FAIL;
 	//}
 #ifdef _DEBUG
-	m_pColliderCom->Render(fTimeDelta);
+	//m_pColliderCom->Render(fTimeDelta);
 #endif // DEBUG
 
 	return S_OK;

@@ -123,6 +123,11 @@ void CRenderInstance::Show_Layer_View()
 	m_pRenderer->Show_Layer_View();
 }
 
+void CRenderInstance::Show_ToolView()
+{
+	m_pRenderer->Show_ToolView();
+}
+
 _bool CRenderInstance::Get_isLayerView()
 {
 	return m_pRenderer->Get_isLayerView();
@@ -211,6 +216,16 @@ _int CRenderInstance::Add_ClientRenderTarget(const _wstring& strMRTTag, const _w
 HRESULT CRenderInstance::Add_ClientRenderTargetToMRT(const _wstring& strMRTTag, const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor)
 {
 	return m_pTarget_Manager->Add_ClientRenderTargetToMRT(strMRTTag, strTargetTag, iWidth, iHeight, ePixelFormat, vClearColor);
+}
+
+map<const _wstring, list<class CRenderTarget*>>* CRenderInstance::Get_MRTs()
+{
+	return m_pTarget_Manager->Get_MRTs();
+}
+
+vector<_wstring>* CRenderInstance::Get_MRTKeys()
+{
+	return m_pTarget_Manager->Get_MRTKeys();
 }
 
 #ifdef _DEBUG

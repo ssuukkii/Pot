@@ -137,7 +137,7 @@ void CAttackObject_Energy::Late_Update(_float fTimeDelta)
 HRESULT CAttackObject_Energy::Render(_float fTimeDelta)
 {
 #ifdef _DEBUG
-	m_pColliderCom->Render(fTimeDelta);
+	//m_pColliderCom->Render(fTimeDelta);
 
 	for (auto pCollider : m_vecColliderCom)
 	{

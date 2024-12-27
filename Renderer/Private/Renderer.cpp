@@ -102,7 +102,13 @@ HRESULT CRenderer::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 
 	_float offsetY = 18.f;
 #ifdef _DEBUG
-	if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_PickDepth"), 100.f, 100.f + offsetY, 200.0f, 200.0f)))
+	/*
+	Target_Player_Diffuse
+	Target_Player_Normal
+	Target_Player_Depth
+	Target_Player_AuraMask
+	*/
+	if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Player_AuraMask"), 100.f, 100.f + offsetY, 200.0f, 200.0f)))
 		return E_FAIL;
 	
 
@@ -331,8 +337,12 @@ HRESULT CRenderer::Draw(_float fTimeDelta)
 	if (FAILED(Render_Debug(fTimeDelta)))
 		return E_FAIL;
 #endif
-	if (FAILED(Render_ToolViewPort(fTimeDelta)))
-		return E_FAIL;
+
+	if (m_bisToolView == true)
+	{
+		if (FAILED(Render_ToolViewPort(fTimeDelta)))
+			return E_FAIL;
+	}
 
 
 	return S_OK;
@@ -844,7 +854,9 @@ HRESULT CRenderer::Render_PlayerLight(_float fTimeDelta, _int iCount)
 
 	if (pLightDesc != nullptr)
 	{
-		Render_PlayerAuraMaskBlur(fTimeDelta, pLightDesc->vAuraColor);
+		Render_PlayerAuraMaskBlur(fTimeDelta, m_fAuraColor);
+		
+		//Render_PlayerAuraMaskBlur(fTimeDelta, pLightDesc->vAuraColor);
 	}
 	
 	
@@ -1912,7 +1924,7 @@ HRESULT CRenderer::Render_Debug(_float fTimeDelta)
 		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 			return E_FAIL;
 
-		if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_EffectToolPick"), m_pShader, m_pVIBuffer)))
+		if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_Player"), m_pShader, m_pVIBuffer)))
 			return E_FAIL;
 
 		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_BloomDiffuse"), m_pShader, m_pVIBuffer)))
@@ -2755,7 +2767,7 @@ HRESULT CRenderer::Initialize_RenderTarget()
 	if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Depth"))))
 		return E_FAIL;
 #pragma endregion
-
+	
 #pragma region Player
 	if (FAILED(m_pRenderInstance->Add_RenderTarget(TEXT("Target_Player_Diffuse"), ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, XMVectorSet(1.f, 1.f, 1.f, 0.f))))
 		return E_FAIL;

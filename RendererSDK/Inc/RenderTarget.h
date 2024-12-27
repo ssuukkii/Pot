@@ -12,7 +12,7 @@ END
 
 BEGIN(Renderer)
 
-class CRenderTarget final : public CBase
+class RENDERER_DLL CRenderTarget final : public CBase
 {
 private:
 	CRenderTarget(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -24,12 +24,14 @@ public:
 	}
 
 public:
-	HRESULT Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor);
+	HRESULT Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor, const _wstring& strTargetTag);
 	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
 	void Clear();
 	HRESULT Copy_RenderTarget(ID3D11Texture2D* pTexture2D);
-
+	
 	ID3D11ShaderResourceView* Copy_ShaderResourceView();
+
+	_wstring Get_TargetTag() { return m_strTargetTag; }
 #ifdef _DEBUG
 public:
 	HRESULT Ready_Debug(_float fCenterX, _float fCenterY, _float fSizeX, _float fSizeY);
@@ -45,13 +47,14 @@ private:
 	ID3D11ShaderResourceView*	m_pSRV = { nullptr };
 	_float4						m_vClearColor = {};
 
+	_wstring m_strTargetTag;
 #ifdef _DEBUG
 private:
 	_float4x4					m_WorldMatrix;
 #endif
 
 public:
-	static CRenderTarget* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor);
+	static CRenderTarget* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor, const _wstring& strTargetTag = L"");
 	virtual void Free() override;
 };
 

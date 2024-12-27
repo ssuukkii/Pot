@@ -20,9 +20,12 @@
 #include "IMGUI_Camera_Tab.h"
 
 #include "Character.h"
-
+#include "RenderTarget.h"
+#include "Target_Manager.h"
 #include "imnodes.h"
 #include <iostream>
+#include <locale>
+#include <codecvt>
 
 _bool bShowImGuiWindows = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
 _bool bShowImGuiRenderTarget = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
@@ -80,6 +83,8 @@ HRESULT CImgui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	m_pBackBufferSRV = m_pRenderInstance->Get_ViewPortSRV();
 	Safe_AddRef(m_pBackBufferSRV);
 
+	m_MRTKeys = m_pRenderInstance->Get_MRTKeys();
+	m_MRTs = m_pRenderInstance->Get_MRTs();
 	return S_OK;
 }
 
@@ -121,6 +126,7 @@ void CImgui_Manager::Late_Update(_float fTimeDelta)
 
 HRESULT CImgui_Manager::Render(_float fTimeDelta)
 {
+	(*m_vecTabs.at(1)).Render(fTimeDelta);
 	m_fTimeAcc += fTimeDelta;
 
 	++m_iNumCount;
@@ -135,23 +141,77 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-	
+
+#pragma region 영상용 아우라 렌더러에서도 수정해야됨
 	//// Render IMGUI UI elements
 	//Render_IMGUI(fTimeDelta);
 	
 	//Render_EffectAnimationTabs(fTimeDelta);
+
+	//ImGui::Begin("Aura Color Edit");
+
+	//// RGBA 값을 위한 세로바 슬라이더
+	//bool valueChanged = false;  // 값이 변경되었는지 확인
+
+	//ImGui::Dummy(ImVec2(5.0f, 1.0f));
+	//ImGui::SameLine();
+	//valueChanged |= ImGui::VSliderFloat("R", ImVec2(20, 160), &color.x, 0.0f, 50.0f, "");
+	//ImGui::SameLine();
+	//ImGui::Dummy(ImVec2(5.0f, 1.0f));
+	//ImGui::SameLine();
+	//valueChanged |= ImGui::VSliderFloat("G", ImVec2(20, 160), &color.y, 0.0f, 50.0f, "");
+	//ImGui::SameLine();
+	//ImGui::Dummy(ImVec2(5.0f, 1.0f));
+	//ImGui::SameLine();
+	//valueChanged |= ImGui::VSliderFloat("B", ImVec2(20, 160), &color.z, 0.0f, 50.0f, "");
+	//ImGui::SameLine();
+	//ImGui::Dummy(ImVec2(5.0f, 1.0f));
+	//ImGui::SameLine();
+	//valueChanged |= ImGui::VSliderFloat("A", ImVec2(20, 160), &color.w, 0.0f, 50.0f, "");
+
+	//// 숫자 입력을 위한 필드
+	//valueChanged |= ImGui::InputFloat4("", reinterpret_cast<float*>(&color));
+
+	//// 0.5f씩 증가/감소하는 버튼 (RGB)
+	//if (ImGui::Button("+0.1 R")) { color.x = min(255.0f, max(0.0f, color.x + 0.1f)); valueChanged = true; }
+	//ImGui::SameLine();
+	//if (ImGui::Button("+0.1 G")) { color.y = min(255.0f, max(0.0f, color.y + 0.1f)); valueChanged = true; }
+	//ImGui::SameLine();
+	//if (ImGui::Button("+0.1 B")) { color.z = min(255.0f, max(0.0f, color.z + 0.1f)); valueChanged = true; }
+	//ImGui::SameLine();
+	//if (ImGui::Button("+0.05 A")) { color.w = min(30.0f, max(0.0f, color.w + 0.05f)); valueChanged = true; }
+
+	//if (ImGui::Button("-0.1 R")) { color.x = min(255.0f, max(0.0f, color.x - 0.1f)); valueChanged = true; }
+	//ImGui::SameLine();
+	//if (ImGui::Button("-0.1 G")) { color.y = min(255.0f, max(0.0f, color.y - 0.1f)); valueChanged = true; }
+	//ImGui::SameLine();
+	//if (ImGui::Button("-0.1 B")) { color.z = min(255.0f, max(0.0f, color.z - 0.1f)); valueChanged = true; }
+	//ImGui::SameLine();
+	//if (ImGui::Button("-0.05 A")) { color.w = min(30.0f, max(0.0f, color.w - 0.05f)); valueChanged = true; }
+
+	//ImGui::End();
+
+	//m_pRenderInstance->Set_AuraColor(color);
+#pragma endregion
 
 	ImGui::SetNextWindowSize(ImVec2(1920, 20));
 
 	if (ImGui::BeginMainMenuBar()) {
 		ImGui::Text("FPS : %d", m_iNumRender);
 
-		if (ImGui::BeginMenu("Render_Target")) {
+		if (ImGui::Button("Render_Target"))
+		{
+			//m_bisRenderTarget = !m_bisRenderTarget;
+			bShowImGuiRenderTarget = !bShowImGuiRenderTarget;
+			m_pRenderInstance->SetActive_RenderTarget(bShowImGuiRenderTarget);
+		}
+			
+		/*if (ImGui::BeginMenu("Render_Target")) {
 			if (ImGui::MenuItem("Render_Target", NULL, &bShowImGuiRenderTarget)) {
 				m_pRenderInstance->SetActive_RenderTarget(bShowImGuiRenderTarget);
 			}
 			ImGui::EndMenu();
-		}
+		}*/
 
 		if (ImGui::Checkbox("Test_View", &bShowImGuiLayerView)) {
 			m_pRenderInstance->Show_Layer_View();
@@ -161,16 +221,22 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 			if (ImGui::MenuItem("InputActive", NULL, &bShowImGuiPlayerInput)) {
 				CGameObject* player_1P = m_pGameInstance->Get_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Character"), 0);
 				CGameObject* player_2P = m_pGameInstance->Get_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Character"), 1);
-
+				CGameObject* player_3P = m_pGameInstance->Get_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Character"), 2);
+				CGameObject* player_4P = m_pGameInstance->Get_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Character"), 3);
 				CCharacter* character_1P = static_cast<CCharacter*>(player_1P);
 				CCharacter* character_2P = static_cast<CCharacter*>(player_2P);
-
+				CCharacter* character_3P = static_cast<CCharacter*>(player_3P);
+				CCharacter* character_4P = static_cast<CCharacter*>(player_4P);
 				character_1P->Set_InputActive(!bShowImGuiPlayerInput);
 				character_2P->Set_InputActive(!bShowImGuiPlayerInput);
+				character_3P->Set_InputActive(!bShowImGuiPlayerInput);
+				character_4P->Set_InputActive(!bShowImGuiPlayerInput);
 			}
 			ImGui::EndMenu();
 		}
 
+		if(ImGui::Checkbox("ToolView", &m_bIsToolView))
+			m_pRenderInstance->Show_ToolView();
 		
 		_float fWindowWidth = ImGui::GetWindowSize().x;
 		_float fButtonWidth = 150.0f;
@@ -187,60 +253,69 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 		ImGui::EndMainMenuBar();
 	}
 
-	ImGui::SetNextWindowPos(ImVec2(0, 20));
-	ImGui::SetNextWindowSize(ImVec2(1920, 1080));
+	if (m_bIsToolView == true)
+	{
 
-	ImGui::Begin("Window", nullptr,
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoResize |  
-		ImGuiWindowFlags_NoMove |    
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar | 
-		ImGuiWindowFlags_NoScrollWithMouse |
-		ImGuiWindowFlags_NoBringToFrontOnFocus);
+		ImGui::SetNextWindowPos(ImVec2(0, 20));
+		ImGui::SetNextWindowSize(ImVec2(1920, 1080));
+
+		ImGui::Begin("Window", nullptr,
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoResize |  
+			ImGuiWindowFlags_NoMove |    
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar | 
+			ImGuiWindowFlags_NoScrollWithMouse |
+			ImGuiWindowFlags_NoBringToFrontOnFocus);
 	
-	/**
-	*	메뉴바는 개별로임 그냥 저장버튼 따로 빼야될듯
-	*	서로 창크기 조절하는 기능은 여유나면 하기
-	*	밑 애니메이션창은 이펙트툴 그대로 이식 및 탭으로 나눠서 쉐이더탭까지
-	*	오른쪽밑엔 이펙트툴에서 파생된 라업룩 포지션창 같은거 조절하는창으로
-	*	오른쪽상단엔 뷰포트에 나와있는 오브젝트 나열 ( 아웃라인 추가, 피킹 세부조정 )
-	*/
-	ImGui::BeginChild("Viewport", ImVec2(1280, 720), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-	ImGui::Image((ImTextureID)m_pBackBufferSRV, ImVec2(1280, 720));
-	ImGui::EndChild();
+		/**
+		*	메뉴바는 개별로임 그냥 저장버튼 따로 빼야될듯
+		*	서로 창크기 조절하는 기능은 여유나면 하기
+		*	밑 애니메이션창은 이펙트툴 그대로 이식 및 탭으로 나눠서 쉐이더탭까지
+		*	오른쪽밑엔 이펙트툴에서 파생된 라업룩 포지션창 같은거 조절하는창으로
+		*	오른쪽상단엔 뷰포트에 나와있는 오브젝트 나열 ( 아웃라인 추가, 피킹 세부조정 )
+		*/
+		ImGui::BeginChild("Viewport", ImVec2(1280, 720), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+		ImGui::Image((ImTextureID)m_pBackBufferSRV, ImVec2(1280, 720));
+		ImGui::EndChild();
 
-	ImGui::SameLine();
+		ImGui::SameLine();
 
-	(*m_vecTabs.at(1)).Render(fTimeDelta);
+		(*m_vecTabs.at(1)).Render(fTimeDelta);
 
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 
-	ImGui::BeginChild("RightPanel", ImVec2(1920 - 1280, 720), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+		ImGui::BeginChild("RightPanel", ImVec2(1920 - 1280, 720), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
-	ImGui::BeginChild("Outliner", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+		ImGui::BeginChild("Outliner", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
-	(*m_vecTabs.begin())->Effect_Menu();
+		(*m_vecTabs.begin())->Effect_Menu();
 
-	ImGui::EndChild();
+		ImGui::EndChild();
 
-	ImGui::BeginChild("Details", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
-	(*m_vecTabs.begin())->Effect_Transform();
-	ImGui::EndChild();
-	ImGui::EndChild();
+		ImGui::BeginChild("Details", ImVec2(1920 - 1280, 360), true, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
+		(*m_vecTabs.begin())->Effect_Transform();
+		ImGui::EndChild();
+		ImGui::EndChild();
 
-	ImGui::PopStyleVar();
+		ImGui::PopStyleVar();
 
-	ImGui::BeginChild("Effect Tool", ImVec2(1920, 360), true);
-	(*m_vecTabs.begin())->Render(fTimeDelta);
-	ImGui::EndChild();
+		ImGui::BeginChild("Effect Tool", ImVec2(1920, 360), true);
+		(*m_vecTabs.begin())->Render(fTimeDelta);
+		ImGui::EndChild();
 
-	ImGui::End();
+		ImGui::End();
 
-	if (m_pGameInstance->Key_Down(DIK_TAB))
-		m_bisSwitchShaderTab = true;
+		if (m_pGameInstance->Key_Down(DIK_TAB))
+			m_bisSwitchShaderTab = true;
 	
-	Render_ShaderTabs(fTimeDelta);
+		Render_ShaderTabs(fTimeDelta);
+
+		if (m_bisRenderTarget == true)
+		{
+			Render_RenderTarget(fTimeDelta);
+		}
+	}
 
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -400,7 +475,7 @@ void CImgui_Manager::Render_IMGUI(_float fTimeDelta)
 
 	ImGui::End();
 
-	//m_pRenderInstance->Set_AuraColor(color);
+	m_pRenderInstance->Set_AuraColor(color);
 
 	// 토글 버튼
 	if (ImGui::BeginMainMenuBar()) {
@@ -579,6 +654,91 @@ void CImgui_Manager::Render_ShaderTabs(_float fTimeDelta)
 void CImgui_Manager::Render_EffectAnimationTabs(_float fTimeDelta)
 {
 }
+
+void CImgui_Manager::Render_RenderTarget(_float fTimeDelta)
+{
+	//ImGui::SetNextWindowPos(ImVec2(200, 200));
+	//ImGui::SetNextWindowSize(ImVec2(1200, 700));
+
+	ImGui::Begin("Render_Target");
+
+	// Step 1: ImGui로 m_MRTKeys의 리스트를 보여주는 드롭다운 또는 리스트 박스
+	if (!m_MRTKeys->empty())
+	{
+		// 키를 선택할 수 있는 드롭다운 메뉴
+		std::vector<std::string> keys;
+		for (const auto& key : *m_MRTKeys)
+		{
+			keys.emplace_back(key.begin(), key.end()); // std::wstring -> std::string 변환
+		}
+
+		// ImGui에서 사용하기 위해 const char* 포인터 제공
+		std::vector<const char*> cstrKeys;
+		for (const auto& key : keys)
+		{
+			cstrKeys.push_back(key.c_str());
+		}
+
+		static int selectedIdx = -1;
+		if (ImGui::Combo("MRT Keys", &selectedIdx, cstrKeys.data(), cstrKeys.size()))
+		{
+			// 키가 선택되었을 때 m_MRTs 맵에서 해당 키에 맞는 RenderTarget 리스트를 가져옵니다.
+			
+		}
+		if (selectedIdx >= 0)
+		{
+			// 선택된 키를 가져옴
+			const _wstring selectedKey = (*m_MRTKeys)[selectedIdx];
+
+			auto it = m_MRTs->find(selectedKey);
+			if (it != m_MRTs->end())
+			{
+				// 해당 키에 해당하는 RenderTarget 리스트 가져오기
+				list<CRenderTarget*> renderTargets = it->second;
+
+				// Step 2: 각 RenderTarget에서 SRV를 가져오고 ImGui로 표시
+				for (CRenderTarget* target : renderTargets)
+				{
+
+					std::string tag = WStringToString(target->Get_TargetTag());
+					ImGui::Text(tag.c_str());
+					ImGui::SameLine();
+					ImGui::Dummy({ 150,1 });
+					ImGui::SameLine();
+				}
+				ImGui::Dummy({ 10,10 });
+				for (CRenderTarget* target : renderTargets)
+				{
+					ID3D11ShaderResourceView* srv = target->Copy_ShaderResourceView();
+					if (srv)
+					{
+						ImVec2 imageSize = ImVec2(256, 256); // 이미지 크기
+						ImVec2 pos = ImGui::GetCursorScreenPos(); // 현재 커서 위치 가져오기
+
+						// 배경 색상 (검은색)으로 사각형 그리기
+						ImDrawList* drawList = ImGui::GetWindowDrawList();
+						drawList->AddRectFilled(pos, ImVec2(pos.x + imageSize.x, pos.y + imageSize.y), IM_COL32(0, 0, 0, 255));
+
+						// 이미지 렌더링
+						ImGui::Image((void*)srv, imageSize);
+						ImGui::SameLine();
+					}
+				}
+			}
+			else
+			{
+				ImGui::Text("No RenderTargets found for this key.");
+			}
+		}
+	}
+	else
+	{
+		ImGui::Text("MRT Keys list is empty.");
+	}
+
+	ImGui::End();
+}
+
 
 void CImgui_Manager::ToolViewRender()
 {

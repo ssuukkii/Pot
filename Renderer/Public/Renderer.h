@@ -48,10 +48,10 @@ public:
 	void Show_OutLine() { m_isOutLine = !m_isOutLine; }
 	void Show_Layer_View() { m_isLayerView = !m_isLayerView; }
 	_bool Get_isLayerView() { return m_isLayerView; }
-
+	void Show_ToolView() { m_bisToolView = !m_bisToolView; }
 private:
 	_bool m_isOutLine = { false };
-
+	_bool m_bisToolView = { true };
 	_bool m_isLayerView = { true };
 private:
 	ID3D11Device*			m_pDevice = { nullptr };

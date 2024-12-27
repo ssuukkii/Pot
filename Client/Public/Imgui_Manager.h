@@ -14,6 +14,8 @@ END
 
 BEGIN(Renderer)
 class CRenderInstance;
+class CRenderTarget;
+class CTarget_Manager;
 END
 
 
@@ -69,11 +71,13 @@ public:
 	void Set_CurEffectLayer(CEffect_Layer* pEffectLayer) { m_pCurEffectLayer = pEffectLayer; }
 private:
 	CEffect_Layer* m_pCurEffectLayer = { nullptr };
+	_bool m_bIsToolView = { true };
 private:
 	void Render_IMGUI(_float fTimeDelta);
 	void Render_ShaderTabs(_float fTimeDelta);
 	void Render_EffectAnimationTabs(_float fTimeDelta);
-
+	void Render_RenderTarget(_float fTimeDelta);
+	_bool m_bisRenderTarget = { false };
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
 	CRenderInstance* m_pRenderInstance = { nullptr };
@@ -92,6 +96,9 @@ private:
 	ID3D11ShaderResourceView* m_pBackBufferSRV = { nullptr };
 
 	_bool m_bisSwitchShaderTab = { false };
+
+	map<const _wstring, list<class CRenderTarget*>>*	m_MRTs;
+	vector<_wstring>* m_MRTKeys;
 public:
 	
 	void SetMainApp(CMainApp* pMainApp) { m_pMainApp = pMainApp; }
