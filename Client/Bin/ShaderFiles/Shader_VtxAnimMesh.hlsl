@@ -186,7 +186,7 @@ PS_OUT PS_MAIN_21(PS_IN In)
     Out.vDiffuse = vResultColor;
     Out.vNormal = vector((In.vNormal.xyz * 0.5f + 0.5f), fHairMask);
     Out.vDepth = vector((In.vProjPos.w / 1000.f), In.vProjPos.z / In.vProjPos.w, 0.f, 0.f);
-    Out.vAuraColor = vector(1.f, 1.f, 1.f, 1.f);
+    Out.vAuraColor = vector(1.f, 0.f, 0.f, 0.f);
     return Out;
 }
 PS_OUT PS_MAIN_FRIEZA(PS_IN In)

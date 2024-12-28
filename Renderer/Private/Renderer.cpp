@@ -2972,6 +2972,13 @@ HRESULT CRenderer::Initialize_RenderTarget()
 	if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_ToolViewPort"), TEXT("Target_ToolViewPort"))))
 		return E_FAIL;
 
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (FAILED(m_pRenderInstance->Add_RenderTarget(TEXT("Target_ToolRT_") + to_wstring(i), ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+		if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_ToolRT_") + to_wstring(i), TEXT("Target_ToolRT_") + to_wstring(i))))
+			return E_FAIL;
+	}
 	return S_OK;
 }
 

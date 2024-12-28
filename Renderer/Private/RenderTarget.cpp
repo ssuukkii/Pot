@@ -42,6 +42,15 @@ HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixe
 	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture2D, nullptr, &m_pSRV)))
 		return E_FAIL;
 
+	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, nullptr, &m_pTexture2D_D)))
+		return E_FAIL;
+
+	if (FAILED(m_pDevice->CreateRenderTargetView(m_pTexture2D_D, nullptr, &m_pRTV_D)))
+		return E_FAIL;
+
+	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture2D, nullptr, &m_pSRV_D)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -89,6 +98,24 @@ HRESULT CRenderTarget::Ready_Debug(_float fCenterX, _float fCenterY, _float fSiz
 HRESULT CRenderTarget::Render_Debug(CShader * pShader, CVIBuffer_Rect * pVIBuffer)
 {
 	if (FAILED(pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+		return E_FAIL;
+
+	if (FAILED(pShader->Bind_ShaderResourceView("g_Texture", m_pSRV)))
+		return E_FAIL;
+
+	pShader->Begin(0);
+
+	pVIBuffer->Bind_Buffers();
+
+	pVIBuffer->Render();
+
+	return S_OK;
+}
+
+HRESULT CRenderTarget::Render_Debug(CShader* pShader, CVIBuffer_Rect* pVIBuffer, _float4x4 WorldMatrix)
+{
+	
+	if (FAILED(pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
 		return E_FAIL;
 
 	if (FAILED(pShader->Bind_ShaderResourceView("g_Texture", m_pSRV)))

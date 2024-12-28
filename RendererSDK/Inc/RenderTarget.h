@@ -23,6 +23,10 @@ public:
 		return m_pRTV;
 	}
 
+	ID3D11RenderTargetView* Get_RTV_Debug() const {
+		return m_pRTV_D;
+	}
+
 public:
 	HRESULT Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor, const _wstring& strTargetTag);
 	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
@@ -36,6 +40,7 @@ public:
 public:
 	HRESULT Ready_Debug(_float fCenterX, _float fCenterY, _float fSizeX, _float fSizeY);
 	HRESULT Render_Debug(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+	HRESULT Render_Debug(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer,_float4x4 WorldMatrix);
 #endif
 
 private:
@@ -53,6 +58,9 @@ private:
 	_float4x4					m_WorldMatrix;
 #endif
 
+	ID3D11Texture2D* m_pTexture2D_D = { nullptr };
+	ID3D11RenderTargetView* m_pRTV_D = { nullptr };
+	ID3D11ShaderResourceView* m_pSRV_D = { nullptr };
 public:
 	static CRenderTarget* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor, const _wstring& strTargetTag = L"");
 	virtual void Free() override;

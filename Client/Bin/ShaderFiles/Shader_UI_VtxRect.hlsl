@@ -102,12 +102,13 @@ struct PS_OUT
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out;
-
-    Out.vColor = g_Texture.Sample(LinearSampler, In.vTexcoord);
+    vector color = g_Texture.Sample(LinearSampler, In.vTexcoord);
+    color.a = 1.f;
+    Out.vColor = color;
 
 	//Out.vColor.gb = Out.vColor.r;
-    if (Out.vColor.a <= 0.1f)
-        discard;
+    //if (Out.vColor.a <= 0.1f)
+    //    discard;
     
     return Out;
 }
@@ -781,7 +782,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;

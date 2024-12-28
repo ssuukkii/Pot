@@ -10,6 +10,9 @@
 
 BEGIN(Engine)
 class CGameInstance;
+class CVIBuffer_Rect;
+class CTexture;
+class CShader;
 END
 
 BEGIN(Renderer)
@@ -108,6 +111,8 @@ private:
 	_uint						m_iNumRender = {};
 	_float						m_fTimeAcc = {};
 	
+	CShader* m_pShaderCom = { nullptr };
+	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 public:
 	virtual void Free() override;
 	_float4	color = {};

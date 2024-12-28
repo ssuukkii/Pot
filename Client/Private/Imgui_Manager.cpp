@@ -27,6 +27,10 @@
 #include <locale>
 #include <codecvt>
 
+_float4x4					m_WorldMatrix = {};
+_float4x4					m_ViewMatrix = {};
+_float4x4					m_ProjMatrix = {};
+
 _bool bShowImGuiWindows = true;  // IMGUI 창 표시 여부를 제어하는 전역 변수
 _bool bShowImGuiRenderTarget = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
 _bool bShowImGuiDebug_Component = false;  // IMGUI 창 표시 여부를 제어하는 전역 변수
@@ -55,6 +59,11 @@ HRESULT CImgui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 {
 	m_pDevice = pDevice;
 	m_pContext = pContext;
+
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(1920.f, 1080.f, 0.f, 1.f));
+	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixScaling(1920.f, 1080.f, 1.f));
+
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 
@@ -85,6 +94,22 @@ HRESULT CImgui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 	m_MRTKeys = m_pRenderInstance->Get_MRTKeys();
 	m_MRTs = m_pRenderInstance->Get_MRTs();
+
+	//MSG_BOX(TEXT("Debug1"));
+/* For.Com_Shader */
+	m_pShaderCom = reinterpret_cast<CShader*>(m_pGameInstance->Clone_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_UI_VtxRect")));
+	m_pVIBufferCom = reinterpret_cast<CVIBuffer_Rect*>(m_pGameInstance->Clone_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect")));
+
+	//if (FAILED(m_pGameInstance->Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_UI_VtxRect"),
+	//	TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+	//	return E_FAIL;
+
+	////MSG_BOX(TEXT("Debug2"));
+	///* For.Com_VIBuffer */
+	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+	//	TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+	//	return E_FAIL;
+
 	return S_OK;
 }
 
@@ -138,60 +163,60 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 		m_iNumCount = 0;
 	}
 
+	//BeginImGuiWithoutAlpha(m_pContext); 
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+	// Render IMGUI UI elements
+//Render_IMGUI(fTimeDelta);
+
+//Render_EffectAnimationTabs(fTimeDelta);
 
 #pragma region 영상용 아우라 렌더러에서도 수정해야됨
-	//// Render IMGUI UI elements
-	//Render_IMGUI(fTimeDelta);
-	
-	//Render_EffectAnimationTabs(fTimeDelta);
+	ImGui::Begin("Aura Color Edit");
 
-	//ImGui::Begin("Aura Color Edit");
+	// RGBA 값을 위한 세로바 슬라이더
+	bool valueChanged = false;  // 값이 변경되었는지 확인
 
-	//// RGBA 값을 위한 세로바 슬라이더
-	//bool valueChanged = false;  // 값이 변경되었는지 확인
+	ImGui::Dummy(ImVec2(5.0f, 1.0f));
+	ImGui::SameLine();
+	valueChanged |= ImGui::VSliderFloat("R", ImVec2(20, 160), &color.x, 0.0f, 50.0f, "");
+	ImGui::SameLine();
+	ImGui::Dummy(ImVec2(5.0f, 1.0f));
+	ImGui::SameLine();
+	valueChanged |= ImGui::VSliderFloat("G", ImVec2(20, 160), &color.y, 0.0f, 50.0f, "");
+	ImGui::SameLine();
+	ImGui::Dummy(ImVec2(5.0f, 1.0f));
+	ImGui::SameLine();
+	valueChanged |= ImGui::VSliderFloat("B", ImVec2(20, 160), &color.z, 0.0f, 50.0f, "");
+	ImGui::SameLine();
+	ImGui::Dummy(ImVec2(5.0f, 1.0f));
+	ImGui::SameLine();
+	valueChanged |= ImGui::VSliderFloat("A", ImVec2(20, 160), &color.w, 0.0f, 50.0f, "");
 
-	//ImGui::Dummy(ImVec2(5.0f, 1.0f));
-	//ImGui::SameLine();
-	//valueChanged |= ImGui::VSliderFloat("R", ImVec2(20, 160), &color.x, 0.0f, 50.0f, "");
-	//ImGui::SameLine();
-	//ImGui::Dummy(ImVec2(5.0f, 1.0f));
-	//ImGui::SameLine();
-	//valueChanged |= ImGui::VSliderFloat("G", ImVec2(20, 160), &color.y, 0.0f, 50.0f, "");
-	//ImGui::SameLine();
-	//ImGui::Dummy(ImVec2(5.0f, 1.0f));
-	//ImGui::SameLine();
-	//valueChanged |= ImGui::VSliderFloat("B", ImVec2(20, 160), &color.z, 0.0f, 50.0f, "");
-	//ImGui::SameLine();
-	//ImGui::Dummy(ImVec2(5.0f, 1.0f));
-	//ImGui::SameLine();
-	//valueChanged |= ImGui::VSliderFloat("A", ImVec2(20, 160), &color.w, 0.0f, 50.0f, "");
+	// 숫자 입력을 위한 필드
+	valueChanged |= ImGui::InputFloat4("", reinterpret_cast<float*>(&color));
 
-	//// 숫자 입력을 위한 필드
-	//valueChanged |= ImGui::InputFloat4("", reinterpret_cast<float*>(&color));
+	// 0.5f씩 증가/감소하는 버튼 (RGB)
+	if (ImGui::Button("+0.1 R")) { color.x = min(255.0f, max(0.0f, color.x + 0.1f)); valueChanged = true; }
+	ImGui::SameLine();
+	if (ImGui::Button("+0.1 G")) { color.y = min(255.0f, max(0.0f, color.y + 0.1f)); valueChanged = true; }
+	ImGui::SameLine();
+	if (ImGui::Button("+0.1 B")) { color.z = min(255.0f, max(0.0f, color.z + 0.1f)); valueChanged = true; }
+	ImGui::SameLine();
+	if (ImGui::Button("+0.05 A")) { color.w = min(30.0f, max(0.0f, color.w + 0.05f)); valueChanged = true; }
 
-	//// 0.5f씩 증가/감소하는 버튼 (RGB)
-	//if (ImGui::Button("+0.1 R")) { color.x = min(255.0f, max(0.0f, color.x + 0.1f)); valueChanged = true; }
-	//ImGui::SameLine();
-	//if (ImGui::Button("+0.1 G")) { color.y = min(255.0f, max(0.0f, color.y + 0.1f)); valueChanged = true; }
-	//ImGui::SameLine();
-	//if (ImGui::Button("+0.1 B")) { color.z = min(255.0f, max(0.0f, color.z + 0.1f)); valueChanged = true; }
-	//ImGui::SameLine();
-	//if (ImGui::Button("+0.05 A")) { color.w = min(30.0f, max(0.0f, color.w + 0.05f)); valueChanged = true; }
+	if (ImGui::Button("-0.1 R")) { color.x = min(255.0f, max(0.0f, color.x - 0.1f)); valueChanged = true; }
+	ImGui::SameLine();
+	if (ImGui::Button("-0.1 G")) { color.y = min(255.0f, max(0.0f, color.y - 0.1f)); valueChanged = true; }
+	ImGui::SameLine();
+	if (ImGui::Button("-0.1 B")) { color.z = min(255.0f, max(0.0f, color.z - 0.1f)); valueChanged = true; }
+	ImGui::SameLine();
+	if (ImGui::Button("-0.05 A")) { color.w = min(30.0f, max(0.0f, color.w - 0.05f)); valueChanged = true; }
 
-	//if (ImGui::Button("-0.1 R")) { color.x = min(255.0f, max(0.0f, color.x - 0.1f)); valueChanged = true; }
-	//ImGui::SameLine();
-	//if (ImGui::Button("-0.1 G")) { color.y = min(255.0f, max(0.0f, color.y - 0.1f)); valueChanged = true; }
-	//ImGui::SameLine();
-	//if (ImGui::Button("-0.1 B")) { color.z = min(255.0f, max(0.0f, color.z - 0.1f)); valueChanged = true; }
-	//ImGui::SameLine();
-	//if (ImGui::Button("-0.05 A")) { color.w = min(30.0f, max(0.0f, color.w - 0.05f)); valueChanged = true; }
+	ImGui::End();
 
-	//ImGui::End();
-
-	//m_pRenderInstance->Set_AuraColor(color);
+	m_pRenderInstance->Set_AuraColor(color);
 #pragma endregion
 
 	ImGui::SetNextWindowSize(ImVec2(1920, 20));
@@ -201,9 +226,9 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 
 		if (ImGui::Button("Render_Target"))
 		{
-			//m_bisRenderTarget = !m_bisRenderTarget;
-			bShowImGuiRenderTarget = !bShowImGuiRenderTarget;
-			m_pRenderInstance->SetActive_RenderTarget(bShowImGuiRenderTarget);
+			m_bisRenderTarget = !m_bisRenderTarget;
+			//bShowImGuiRenderTarget = !bShowImGuiRenderTarget;
+			//m_pRenderInstance->SetActive_RenderTarget(bShowImGuiRenderTarget);
 		}
 			
 		/*if (ImGui::BeginMenu("Render_Target")) {
@@ -319,7 +344,7 @@ HRESULT CImgui_Manager::Render(_float fTimeDelta)
 
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
+	//EndImGui(m_pContext);
 	return S_OK;
 }
 
@@ -657,8 +682,12 @@ void CImgui_Manager::Render_EffectAnimationTabs(_float fTimeDelta)
 
 void CImgui_Manager::Render_RenderTarget(_float fTimeDelta)
 {
+	_float viewportWidth = 1920.0f;   
+	_float targetWidth = viewportWidth / 4.0f;  
+	_float targetHeight = 1080 /4;          
 	//ImGui::SetNextWindowPos(ImVec2(200, 200));
 	//ImGui::SetNextWindowSize(ImVec2(1200, 700));
+	// 현재 Blend State 저장
 
 	ImGui::Begin("Render_Target");
 
@@ -678,13 +707,16 @@ void CImgui_Manager::Render_RenderTarget(_float fTimeDelta)
 		{
 			cstrKeys.push_back(key.c_str());
 		}
-
+		
+		ImGui::PushItemWidth(500.f);
 		static int selectedIdx = -1;
 		if (ImGui::Combo("MRT Keys", &selectedIdx, cstrKeys.data(), cstrKeys.size()))
 		{
 			// 키가 선택되었을 때 m_MRTs 맵에서 해당 키에 맞는 RenderTarget 리스트를 가져옵니다.
-			
 		}
+		static bool isAlpha = false;
+		ImGui::SameLine();
+		ImGui::Checkbox("RenderTarget With Alpha", &isAlpha);
 		if (selectedIdx >= 0)
 		{
 			// 선택된 키를 가져옴
@@ -695,35 +727,68 @@ void CImgui_Manager::Render_RenderTarget(_float fTimeDelta)
 			{
 				// 해당 키에 해당하는 RenderTarget 리스트 가져오기
 				list<CRenderTarget*> renderTargets = it->second;
-
+				ImVec2 Textpos = ImGui::GetCursorPos();
+				
+				_int TextPosCount = 0;
 				// Step 2: 각 RenderTarget에서 SRV를 가져오고 ImGui로 표시
 				for (CRenderTarget* target : renderTargets)
 				{
-
+					ImVec2 targetPos = Textpos; // 텍스트를 배치할 위치
+					targetPos.x = targetPos.x + targetWidth * TextPosCount;
+					//targetPos.y = 20;
+					ImGui::SetCursorPos(targetPos);
 					std::string tag = WStringToString(target->Get_TargetTag());
 					ImGui::Text(tag.c_str());
 					ImGui::SameLine();
-					ImGui::Dummy({ 150,1 });
-					ImGui::SameLine();
+					TextPosCount++;
 				}
 				ImGui::Dummy({ 10,10 });
-				for (CRenderTarget* target : renderTargets)
+				//BeginImGuiWithoutAlpha(m_pContext);
+				if (isAlpha == false)
 				{
-					ID3D11ShaderResourceView* srv = target->Copy_ShaderResourceView();
-					if (srv)
+					_int i = 0;
+					for (CRenderTarget* target : renderTargets)
 					{
-						ImVec2 imageSize = ImVec2(256, 256); // 이미지 크기
-						ImVec2 pos = ImGui::GetCursorScreenPos(); // 현재 커서 위치 가져오기
-
-						// 배경 색상 (검은색)으로 사각형 그리기
-						ImDrawList* drawList = ImGui::GetWindowDrawList();
-						drawList->AddRectFilled(pos, ImVec2(pos.x + imageSize.x, pos.y + imageSize.y), IM_COL32(0, 0, 0, 255));
-
-						// 이미지 렌더링
-						ImGui::Image((void*)srv, imageSize);
-						ImGui::SameLine();
+						m_pRenderInstance->Begin_MRT(TEXT("MRT_ToolRT_") + to_wstring(i));
+						m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix);
+						m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix);
+						target->Render_Debug(m_pShaderCom, m_pVIBufferCom, m_WorldMatrix);
+						m_pRenderInstance->End_MRT();
+					
+						ID3D11ShaderResourceView* srv = m_pRenderInstance->Copy_RenderTarget_SRV(TEXT("Target_ToolRT_") + to_wstring(i));
+						if (srv)
+						{
+							ImVec2 imageSize = ImVec2(480, 270.0f); // 이미지 크기
+							ImGui::Image((void*)srv, imageSize);
+							ImGui::SameLine(0.f, 0.f);
+							//ImGui::SetCursorPosX(ImGui::GetCursorPosX() + imageSize.x);
+						}
+						i++;
 					}
 				}
+				else
+				{
+					for (CRenderTarget* target : renderTargets)
+					{
+						ID3D11ShaderResourceView* srv = target->Copy_ShaderResourceView();
+						if (srv)
+						{
+							ImVec2 imageSize = ImVec2(480, 270.0f); // 이미지 크기
+
+							ImVec2 pos = ImGui::GetCursorScreenPos(); // 현재 커서 위치 가져오기
+
+							//// 배경 색상 (검은색)으로 사각형 그리기
+							//ImDrawList* drawList = ImGui::GetWindowDrawList();
+							//drawList->AddRectFilled(pos, ImVec2(pos.x + imageSize.x, pos.y + imageSize.y), IM_COL32(0, 0, 0, 255));
+
+
+							//// 이미지 렌더링
+							ImGui::Image((void*)srv, imageSize);
+							ImGui::SameLine(0.f, 0.f);
+						}
+					}
+				}
+				//EndImGui(m_pContext);
 			}
 			else
 			{
@@ -737,6 +802,7 @@ void CImgui_Manager::Render_RenderTarget(_float fTimeDelta)
 	}
 
 	ImGui::End();
+
 }
 
 
@@ -767,3 +833,4 @@ void CImgui_Manager::Free()
 	Safe_Release(m_pBackBufferSRV);
 	__super::Free();
 }
+
