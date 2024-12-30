@@ -19,7 +19,7 @@ HRESULT CTarget_Manager::Add_RenderTarget(const _wstring & strTargetTag, _uint i
 	if (nullptr != Find_RenderTarget(strTargetTag))
 		return E_FAIL;
 
-	CRenderTarget*		pRenderTarget = CRenderTarget::Create(m_pDevice, m_pContext, iWidth, iHeight, ePixelFormat, vClearColor);
+	CRenderTarget*		pRenderTarget = CRenderTarget::Create(m_pDevice, m_pContext, iWidth, iHeight, ePixelFormat, vClearColor, strTargetTag);
 	if (nullptr == pRenderTarget)
 		return E_FAIL;
 
@@ -146,10 +146,11 @@ HRESULT CTarget_Manager::Add_MRT(const _wstring & strMRTTag, const _wstring & st
 		MRTList.push_back(pRenderTarget);
 
 		m_MRTs.emplace(strMRTTag, MRTList);
+		m_MRTKeys.push_back(strMRTTag);
 	}
 	else	
 		pMRTList->push_back(pRenderTarget);
-
+	
 	Safe_AddRef(pRenderTarget);
 
 	return S_OK;
@@ -181,6 +182,39 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring & strMRTTag, ID3D11DepthStenci
 	}
 
 	if(nullptr != pDSV)
+		m_pContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+	m_pContext->OMSetRenderTargets(iNumRTV, RenderTargets, nullptr == pDSV ? m_pOldDSV : pDSV);
+
+	return S_OK;
+}
+
+HRESULT CTarget_Manager::Begin_MRT_Debug(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV)
+{
+	ID3D11ShaderResourceView* pSRV[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT] = {
+	nullptr
+	};
+
+	m_pContext->PSSetShaderResources(0, D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, pSRV);
+
+	list<CRenderTarget*>* pMRTList = Find_MRT(strMRTTag);
+	if (nullptr == pMRTList)
+		return E_FAIL;
+
+	m_pContext->OMGetRenderTargets(1, &m_pOldRTV, &m_pOldDSV);
+
+	_uint		iNumRTV = { 0 };
+
+	ID3D11RenderTargetView* RenderTargets[8] = { nullptr };
+
+	for (auto& pRenderTarget : *pMRTList)
+	{
+		pRenderTarget->Clear();
+
+		RenderTargets[iNumRTV++] = pRenderTarget->Get_RTV_Debug();
+	}
+
+	if (nullptr != pDSV)
 		m_pContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
 	m_pContext->OMSetRenderTargets(iNumRTV, RenderTargets, nullptr == pDSV ? m_pOldDSV : pDSV);

@@ -3,17 +3,22 @@
 #include "Base.h"
 #include "Client_Defines.h"
 #include "Renderer_Defines.h"
-
+#include "MainApp.h"
 #include "Effect_Layer.h"
 #include "imgui.h"
 #include "Effect.h"
 
 BEGIN(Engine)
 class CGameInstance;
+class CVIBuffer_Rect;
+class CTexture;
+class CShader;
 END
 
 BEGIN(Renderer)
 class CRenderInstance;
+class CRenderTarget;
+class CTarget_Manager;
 END
 
 
@@ -61,6 +66,7 @@ public:
 	_int Get_CurShaderTab_Id() { return m_iCurShaderTabId; }
 	_int Pick_Effect_Mesh();
 
+	void Click_EffectToShaderTab(_uint iMeshIndex);
 	IMGUI_SCREEN Get_Screen_Desc() {
 		return m_ImGuiScreen;
 	}
@@ -68,11 +74,13 @@ public:
 	void Set_CurEffectLayer(CEffect_Layer* pEffectLayer) { m_pCurEffectLayer = pEffectLayer; }
 private:
 	CEffect_Layer* m_pCurEffectLayer = { nullptr };
+	_bool m_bIsToolView = { true };
 private:
 	void Render_IMGUI(_float fTimeDelta);
 	void Render_ShaderTabs(_float fTimeDelta);
 	void Render_EffectAnimationTabs(_float fTimeDelta);
-
+	void Render_RenderTarget(_float fTimeDelta);
+	_bool m_bisRenderTarget = { false };
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
 	CRenderInstance* m_pRenderInstance = { nullptr };
@@ -86,11 +94,25 @@ private:
 	_int m_iShaderCount = { 0 };
 	_int m_iCurShaderTabIndex = { -1 };
 	_int m_iCurShaderTabId = { -1 };
+
+	CMainApp* m_pMainApp = { nullptr };
+	ID3D11ShaderResourceView* m_pBackBufferSRV = { nullptr };
+
+	_bool m_bisSwitchShaderTab = { false };
+
+	map<const _wstring, list<class CRenderTarget*>>*	m_MRTs;
+	vector<_wstring>* m_MRTKeys;
+public:
+	
+	void SetMainApp(CMainApp* pMainApp) { m_pMainApp = pMainApp; }
+	void ToolViewRender();
 private:
 	_uint						m_iNumCount = {};
 	_uint						m_iNumRender = {};
 	_float						m_fTimeAcc = {};
 	
+	CShader* m_pShaderCom = { nullptr };
+	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 public:
 	virtual void Free() override;
 	_float4	color = {};

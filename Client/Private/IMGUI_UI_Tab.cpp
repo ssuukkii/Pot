@@ -18,6 +18,18 @@ void CIMGUI_UI_Tab::Render(_float fTimeDelta)
 {
 }
 
+void CIMGUI_UI_Tab::Effect_Menu()
+{
+}
+
+void CIMGUI_UI_Tab::Effect_Transform()
+{
+}
+
+void CIMGUI_UI_Tab::Camera_Set(_uint iNumCameraModel)
+{
+}
+
 CIMGUI_UI_Tab* CIMGUI_UI_Tab::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CIMGUI_UI_Tab* pInstance = new CIMGUI_UI_Tab(pDevice, pContext);

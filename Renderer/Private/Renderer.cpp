@@ -1,4 +1,4 @@
-#include <random>
+ï»¿#include <random>
 #include <vector>
 
 #include "Renderer.h"
@@ -102,60 +102,70 @@ HRESULT CRenderer::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 
 	_float offsetY = 18.f;
 #ifdef _DEBUG
+	/*
+	Target_Player_Diffuse
+	Target_Player_Normal
+	Target_Player_Depth
+	Target_Player_AuraMask
+	*/
 	if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Player_AuraMask"), 100.f, 100.f + offsetY, 200.0f, 200.0f)))
 		return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_StageDepth"), 100.f, 300.f, 200.0f, 200.0f)))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Player_AuraMask"), 100.f, 500.f, 200.0f, 200.0f)))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Distortion"), 600.f, 100.f, 200.0f, 200.0f)))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_ResultDistortion_BackBuffer"), 350.f, 150.f, 300.f, 300.f)))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_MapBloomAlpha"), 600.f, 100.f, 200.0f, 200.0f)))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_MapBloomDiffuse"), 350.f, 150.f, 300.f, 300.f)))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_AllGlowDiffuse"), TEXT("Target_AllGlowDiffuse"))))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_AllGlowDiffuse"), TEXT("Target_AllGlowAlpha"))))
 
 
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), 100.f, 100.f, 200.0f, 200.0f)))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_UpTarget_Second"), 100.f, 500.f, 200.0f, 200.0f)))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_All_Blur_X"), 600.f, 100.f, 200.0f, 200.0f)))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_All_Blur_Y"), 350.f, 150.f, 300.f, 300.f)))
-	//	return E_FAIL; 
-	/*
-		if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_Player"), TEXT("Target_Player_Diffuse"))))
-		return E_FAIL;
-	if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_Player"), TEXT("Target_Player_Normal"))))
-		return E_FAIL;
-	if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_Player"), TEXT("Target_Player_Depth"))))
-		return E_FAIL;
-	*/
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Player_Diffuse"), 100.f, 100.f, 200.0f, 200.0f)))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Player_Normal"), 100.f, 300.f, 200.0f, 200.0f)))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Player_Depth"), 100.f, 500.f, 200.0f, 200.0f)))
-	//	return E_FAIL;
-	////if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_PickDepth"), 600.f, 100.f, 200.0f, 200.0f)))
-	////	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Shade"), 350.f, 150.f, 300.f, 300.f)))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Specular"), 350.f, 450.f, 300.f, 300.f)))
-	//	return E_FAIL;
+	/*if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_ToolViewPort"), 100.f, 100.f + offsetY, 200.0f, 200.0f)))
+		return E_FAIL;*/
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_StageDepth"), 100.f, 300.f, 200.0f, 200.0f)))
+		//	return E_FAIL;
 
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_PickDepth"), 350.f, 450.f, 300.f, 300.f)))
-	//	return E_FAIL;
-	//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_LightDepth"), 1920.0f - 150.0f, 150.f, 300.f, 300.f)))
-	//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Player_AuraMask"), 100.f, 500.f, 200.0f, 200.0f)))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Distortion"), 600.f, 100.f, 200.0f, 200.0f)))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_ResultDistortion_BackBuffer"), 350.f, 150.f, 300.f, 300.f)))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_MapBloomAlpha"), 600.f, 100.f, 200.0f, 200.0f)))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_MapBloomDiffuse"), 350.f, 150.f, 300.f, 300.f)))
+		//	return E_FAIL;
+
+		//if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_AllGlowDiffuse"), TEXT("Target_AllGlowDiffuse"))))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_AllGlowDiffuse"), TEXT("Target_AllGlowAlpha"))))
+
+
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), 100.f, 100.f, 200.0f, 200.0f)))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_UpTarget_Second"), 100.f, 500.f, 200.0f, 200.0f)))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_All_Blur_X"), 600.f, 100.f, 200.0f, 200.0f)))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_All_Blur_Y"), 350.f, 150.f, 300.f, 300.f)))
+		//	return E_FAIL; 
+		/*
+			if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_Player"), TEXT("Target_Player_Diffuse"))))
+			return E_FAIL;
+		if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_Player"), TEXT("Target_Player_Normal"))))
+			return E_FAIL;
+		if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_Player"), TEXT("Target_Player_Depth"))))
+			return E_FAIL;
+		*/
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Player_Diffuse"), 100.f, 100.f, 200.0f, 200.0f)))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Player_Normal"), 100.f, 300.f, 200.0f, 200.0f)))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Player_Depth"), 100.f, 500.f, 200.0f, 200.0f)))
+		//	return E_FAIL;
+		////if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_PickDepth"), 600.f, 100.f, 200.0f, 200.0f)))
+		////	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Shade"), 350.f, 150.f, 300.f, 300.f)))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_Specular"), 350.f, 450.f, 300.f, 300.f)))
+		//	return E_FAIL;
+
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_PickDepth"), 350.f, 450.f, 300.f, 300.f)))
+		//	return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Ready_RT_Debug(TEXT("Target_LightDepth"), 1920.0f - 150.0f, 150.f, 300.f, 300.f)))
+		//	return E_FAIL;
 #endif
 
 	return S_OK;
@@ -170,7 +180,7 @@ HRESULT CRenderer::Add_RenderObject(RENDERGROUP eRenderGroup, CGameObject* pRend
 
 	Safe_AddRef(pRenderObject);
 
-	/* Æ¯¼öÇÑ È¿°ú´Â ¸ğµÎ ÀÌÁ¦ ÀÌÂÊÀ¸·Î Ã³¸®ÇÑ´Ù */
+	/* íŠ¹ìˆ˜í•œ íš¨ê³¼ëŠ” ëª¨ë‘ ì´ì œ ì´ìª½ìœ¼ë¡œ ì²˜ë¦¬í•œë‹¤ */
 	if (nullptr != pDesc)
 	{
 		if (pDesc->strName != "")
@@ -207,102 +217,134 @@ HRESULT CRenderer::Draw(_float fTimeDelta)
 {
 	if (FAILED(Render_Node(fTimeDelta)))
 		return E_FAIL;
-	/*-----------------µğ¹ö±ë¿ë------------------*/
+
+	/*-----------------ë””ë²„ê¹…ìš©------------------*/
 	if (FAILED(Render_NonBlend_Test(fTimeDelta)))
 		return E_FAIL;
 	if (FAILED(Render_NonBlend_Layer(fTimeDelta)))
 		return E_FAIL;
 	/*-------------------------------------------*/
-	if (FAILED(Render_StageDepth(fTimeDelta)))
-		return E_FAIL;
 
-	if (FAILED(Render_Priority(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Glow_Priority(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Blend_Priority(fTimeDelta)))
-		return E_FAIL;
-	/*----------------- ÇÃ·¹ÀÌ¾î°¡ ¾Æ´Ñ ´Ù¸¥ ¿ÀºêÁ§Æ® -----------------*/
-	if (FAILED(Render_ShadowObj(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Map(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_NonBlend(fTimeDelta)))
-		return E_FAIL;
+	if (m_isLayerView == true)
+	{
+		if (FAILED(Render_StageDepth(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Render_Lights(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Deferred(fTimeDelta)))
-		return E_FAIL;
-	/*-----------------------------------------------------------------*/
+		if (FAILED(Render_Priority(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Glow_Priority(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Blend_Priority(fTimeDelta)))
+			return E_FAIL;
+		/*----------------- í”Œë ˆì´ì–´ê°€ ì•„ë‹Œ ë‹¤ë¥¸ ì˜¤ë¸Œì íŠ¸ -----------------*/
+		if (FAILED(Render_ShadowObj(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Map(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_NonBlend(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Render_NonLight(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_Lights(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Deferred(fTimeDelta)))
+			return E_FAIL;
+		/*-----------------------------------------------------------------*/
 
-	if (FAILED(Render_Metallic(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_NonLight(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Draw_Test_PostProcess(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_Metallic(fTimeDelta)))
+			return E_FAIL;
 
-	/* ¸ÊÀ» ¾îµÓ°Ô ÇÒ·Á°í ¿©±â È£ÃâÇÏÁö¸¸ Ä³¸¯ÅÍ´Â*/
-	if (FAILED(Draw_MapBlackOut(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Player(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Draw_Test_PostProcess(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Render_StageDeferred(fTimeDelta)))
-		return E_FAIL;
-
-	/* ¿©±â¼­ ±×¸®°í ÀÖÀ½ ÀÌÆåÆ®¸¦ À§ÇÑ Çàµ¿ ÇÏÁö¸¸ À§¿¡¼­ ºí·¯¸¦ ¸ÔÀÎ ±×¸²À» °¡Áö°í¸¸ ÀÖ°í ±×¸®Áø ¾Ê¾Æ¼­ ¿µÇâÀÌ ¾È°¡Áü */
-	if (FAILED(Render_AllGlow_Effect_BackSide(fTimeDelta)))
-		return E_FAIL;
-
-	if (FAILED(Render_NonLight_Effect(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_AllGlow_Effect_Pri(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Blend(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Glow(fTimeDelta)))
-		return E_FAIL;
-	
-	/* ¸ÊÀÌ ¾îµÎ¿öÁø »óÅÂ¿¡¼­ µğ½ºÅä¼ÇÇÏ´Â°Ô ÀÚ¿¬½º·¯¿î°¡? Å×½ºÆ® ÇÊ¿ä */
-	if (FAILED(Render_Distortion(fTimeDelta)))
-		return E_FAIL;
+		///* ë§µì„ ì–´ë‘¡ê²Œ í• ë ¤ê³  ì—¬ê¸° í˜¸ì¶œí•˜ì§€ë§Œ ìºë¦­í„°ëŠ”*/
+		if (FAILED(Draw_MapBlackOut(fTimeDelta)))
+			return E_FAIL;
 
 
-	if (FAILED(Render_MultyGlow_UI(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_Player(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Render_UI(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_Glow_UI(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_AllGlow_Effect(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_CutScene_Pri_Effect(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_CutScene_Object(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Render_CutScene_Late_Effect(fTimeDelta)))
-		return E_FAIL;
+		if (FAILED(Render_StageDeferred(fTimeDelta)))
+			return E_FAIL;
 
-	if (FAILED(Draw_AllBlackOut(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Draw_WhiteBlack_Mode(fTimeDelta)))
-		return E_FAIL;
-	if (FAILED(Draw_AllWhiteOut(fTimeDelta)))
-		return E_FAIL;
+		/* ì—¬ê¸°ì„œ ê·¸ë¦¬ê³  ìˆìŒ ì´í™íŠ¸ë¥¼ ìœ„í•œ í–‰ë™ í•˜ì§€ë§Œ ìœ„ì—ì„œ ë¸”ëŸ¬ë¥¼ ë¨¹ì¸ ê·¸ë¦¼ì„ ê°€ì§€ê³ ë§Œ ìˆê³  ê·¸ë¦¬ì§„ ì•Šì•„ì„œ ì˜í–¥ì´ ì•ˆê°€ì§ */
+		if (FAILED(Render_AllGlow_Effect_BackSide(fTimeDelta)))
+			return E_FAIL;
 
-	//if (FAILED(Draw_Test_PostProcess(fTimeDelta)))
-	//	return E_FAIL;
+		if (FAILED(Render_NonLight_Effect(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_AllGlow_Effect_Pri(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Blend(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Glow(fTimeDelta)))
+			return E_FAIL;
 
+		/* ë§µì´ ì–´ë‘ì›Œì§„ ìƒíƒœì—ì„œ ë””ìŠ¤í† ì…˜í•˜ëŠ”ê²Œ ìì—°ìŠ¤ëŸ¬ìš´ê°€? í…ŒìŠ¤íŠ¸ í•„ìš” */
+		if (FAILED(Render_Distortion(fTimeDelta)))
+			return E_FAIL;
+
+
+		if (FAILED(Render_MultyGlow_UI(fTimeDelta)))
+			return E_FAIL;
+
+		if (FAILED(Render_UI(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_Glow_UI(fTimeDelta)))
+			return E_FAIL;
+
+		if (FAILED(Render_AllGlow_Effect(fTimeDelta)))
+			return E_FAIL;
+
+
+		if (FAILED(Render_CutScene_Pri_Effect(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_CutScene_Object(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Render_CutScene_Late_Effect(fTimeDelta)))
+			return E_FAIL;
+
+		//
+
+		if (FAILED(Draw_AllBlackOut(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Draw_WhiteBlack_Mode(fTimeDelta)))
+			return E_FAIL;
+		if (FAILED(Draw_AllWhiteOut(fTimeDelta)))
+			return E_FAIL;
+
+		//if (FAILED(Draw_Test_PostProcess(fTimeDelta)))
+		//	return E_FAIL;
+	}
+	else
+	{
+		if (FAILED(Render_TestEffect(fTimeDelta)))
+			return E_FAIL;
+
+		for (_int i = 0; i < RG_END; i++)
+		{
+			for (auto& pRenderObject : m_RenderObjects[i])
+				Safe_Release(pRenderObject);
+
+			m_RenderObjects[i].clear();
+		}
+	}
 
 #ifdef _DEBUG
 	if (FAILED(Render_Debug(fTimeDelta)))
 		return E_FAIL;
 #endif
+
+	if (m_bisToolView == true)
+	{
+		if (FAILED(Render_ToolViewPort(fTimeDelta)))
+			return E_FAIL;
+	}
+
+
 	return S_OK;
 }
 
@@ -314,9 +356,9 @@ void CRenderer::Create_Distortion(DISTORTION_DESC& tDistortionDesc)
 void CRenderer::Delete_LoopDistortion()
 {
 	m_Distortions.erase(
-		remove_if(m_Distortions.begin(),m_Distortions.end(),[](const DISTORTION_DESC& distortion) {
-				return distortion.isLoop;
-			}
+		remove_if(m_Distortions.begin(), m_Distortions.end(), [](const DISTORTION_DESC& distortion) {
+		return distortion.isLoop;
+	}
 		),
 		m_Distortions.end()
 	);
@@ -328,11 +370,11 @@ void CRenderer::Create_HitDistortion(_float4 vPlayerPos, _float3 vDir, _float2 v
 	random_device rd;
 	mt19937 gen(rd());
 	uniform_real_distribution<_float> offsetDist(0.04f, 0.08f);
-	uniform_real_distribution<_float> scaleDist(0.8f, 1.2f);   
+	uniform_real_distribution<_float> scaleDist(0.8f, 1.2f);
 	uniform_real_distribution<_float> factorDist(0.8f, 1.2f);
-	_float yOffset = 1.55f;	
+	_float yOffset = 1.55f;
 	_float yDecrement = 0.2f;
-	_float xStep = 0.12f;	
+	_float xStep = 0.12f;
 
 	if (vDir.x != 0)
 	{
@@ -412,6 +454,11 @@ void CRenderer::Create_HitDistortion(_float4 vPlayerPos, _float3 vDir, _float2 v
 		}
 	}
 
+}
+
+ID3D11ShaderResourceView* CRenderer::Get_ViewPortSRV()
+{
+	return m_pRenderInstance->Copy_RenderTarget_SRV(TEXT("Target_ToolViewPort"));
 }
 
 HRESULT CRenderer::Render_Priority(_float fTimeDelta)
@@ -569,7 +616,7 @@ HRESULT CRenderer::Render_StageDepth(_float fTimeDelta)
 
 	if (FAILED(m_pRenderInstance->End_MRT()))
 		return E_FAIL;
-	
+
 	return S_OK;
 }
 
@@ -619,7 +666,7 @@ HRESULT CRenderer::Render_StageDeferred(_float fTimeDelta)
 	m_pVIBuffer->Render();
 	return S_OK;
 
-	
+
 }
 
 HRESULT CRenderer::Render_Map(_float fTimeDelta)
@@ -643,7 +690,7 @@ HRESULT CRenderer::Render_Map(_float fTimeDelta)
 	if (FAILED(m_pRenderInstance->End_MRT()))
 		return E_FAIL;
 
-	if(iRenderCount > 0)
+	if (iRenderCount > 0)
 		Draw_MapBloom();
 
 	for (auto& pRenderObject : m_RenderObjects[RG_SPACEMAP])
@@ -689,7 +736,7 @@ HRESULT CRenderer::Render_NonBlend(_float fTimeDelta)
 HRESULT CRenderer::Render_Player(_float fTimeDelta)
 {
 	m_iRenderPlayerCount = 0;
-	
+
 	for (auto& pRenderObject : m_RenderObjects[RG_PLAYER])
 	{
 		if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_Player"))))
@@ -729,7 +776,7 @@ HRESULT CRenderer::Render_Player(_float fTimeDelta)
 		m_iRenderPlayerCount++;
 	}
 
-	if(m_iRenderPlayerCount != 0)
+	if (m_iRenderPlayerCount != 0)
 		Render_PlayerBlur(fTimeDelta);
 
 	m_RenderObjects[RG_PLAYER].clear();
@@ -770,8 +817,8 @@ HRESULT CRenderer::Render_PlayerLight(_float fTimeDelta, _int iCount)
 	m_pVIBuffer->Bind_Buffers();
 	auto strName = m_PlayerStrNames.begin() + iCount;
 	LIGHT_DESC* pLightDesc = m_pRenderInstance->Get_LightDesc(CLight_Manager::LIGHT_PLAYER, 0, *strName);
-	if(pLightDesc != nullptr)
-		m_pRenderInstance->Render_Lights(CLight_Manager::LIGHT_PLAYER, m_pShader, m_pVIBuffer, pLightDesc->strName, fTimeDelta); // ¼öÁ¤
+	if (pLightDesc != nullptr)
+		m_pRenderInstance->Render_Lights(CLight_Manager::LIGHT_PLAYER, m_pShader, m_pVIBuffer, pLightDesc->strName, fTimeDelta); // ìˆ˜ì •
 
 	if (NULL != m_pRenderInstance->Check_EffectLights())
 	{
@@ -807,10 +854,12 @@ HRESULT CRenderer::Render_PlayerLight(_float fTimeDelta, _int iCount)
 
 	if (pLightDesc != nullptr)
 	{
+		//Render_PlayerAuraMaskBlur(fTimeDelta, m_fAuraColor);
+
 		Render_PlayerAuraMaskBlur(fTimeDelta, pLightDesc->vAuraColor);
 	}
-	
-	
+
+
 	return S_OK;
 }
 
@@ -978,7 +1027,7 @@ HRESULT CRenderer::Render_PlayerAuraMaskBlur(_float fTimeDelta, _float4 vColor)
 	m_pAuraTextureCom->Bind_ShaderResource(m_pGlowShader, "g_AuraMaskTexture", 5);
 	m_pGlowShader->Bind_RawValue("g_Time", &m_fAuraAccTime, sizeof(_float));
 	m_pGlowShader->Bind_RawValue("g_vAuraColor", &vColor, sizeof(_float4));
-	
+
 	m_pGlowShader->Begin(17);
 
 	m_pVIBuffer->Bind_Buffers();
@@ -1019,7 +1068,7 @@ HRESULT CRenderer::Render_PlayerAuraMaskBlur(_float fTimeDelta, _float4 vColor)
 	//	return E_FAIL;
 
 	///*
-	//	°¢ÀÚ °Å±â¼­ ³ª¿Â°É·Î ¹Ì¸® ´Ù¸¥ ·»´õÅ¸°Ù¿¡ ³Ö°í µğÇ»Áî±îÁö ³Ö¾îÁÖÀÚ
+	//	ê°ì ê±°ê¸°ì„œ ë‚˜ì˜¨ê±¸ë¡œ ë¯¸ë¦¬ ë‹¤ë¥¸ ë Œë”íƒ€ê²Ÿì— ë„£ê³  ë””í“¨ì¦ˆê¹Œì§€ ë„£ì–´ì£¼ì
 	//*/
 	//m_pGlowShader->Begin(19);
 	//m_pVIBuffer->Bind_Buffers();
@@ -1086,7 +1135,7 @@ HRESULT CRenderer::Render_PlayerBlur(_float fTimeDelta)
 		return E_FAIL;
 
 	/*
-		°¢ÀÚ °Å±â¼­ ³ª¿Â°É·Î ¹Ì¸® ´Ù¸¥ ·»´õÅ¸°Ù¿¡ ³Ö°í µğÇ»Áî±îÁö ³Ö¾îÁÖÀÚ
+		ê°ì ê±°ê¸°ì„œ ë‚˜ì˜¨ê±¸ë¡œ ë¯¸ë¦¬ ë‹¤ë¥¸ ë Œë”íƒ€ê²Ÿì— ë„£ê³  ë””í“¨ì¦ˆê¹Œì§€ ë„£ì–´ì£¼ì
 	*/
 	m_pGlowShader->Begin(11);
 	m_pVIBuffer->Bind_Buffers();
@@ -1120,25 +1169,26 @@ HRESULT CRenderer::Render_NonBlend_Test(_float fTimeDelta)
 
 		return S_OK;
 	}
-
-	/* Diffuse + Normal */
-	if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_EffectToolPick"))))
-		return E_FAIL;
-
-	for (auto& pRenderObject : m_RenderObjects[RG_NONBLEND_TEST])
+	else
 	{
-		if (nullptr != pRenderObject)
-			pRenderObject->Render(fTimeDelta);
+		if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_EffectToolPick"))))
+			return E_FAIL;
 
-		Safe_Release(pRenderObject);
+		for (auto& pRenderObject : m_RenderObjects[RG_NONBLEND_TEST])
+		{
+			if (nullptr != pRenderObject)
+				pRenderObject->Render(fTimeDelta);
+
+			Safe_Release(pRenderObject);
+		}
+
+		m_RenderObjects[RG_NONBLEND_TEST].clear();
+
+		if (FAILED(m_pRenderInstance->End_MRT()))
+			return E_FAIL;
+
+		return S_OK;
 	}
-
-	m_RenderObjects[RG_NONBLEND_TEST].clear();
-
-	if (FAILED(m_pRenderInstance->End_MRT()))
-		return E_FAIL;
-
-	return S_OK;
 }
 
 HRESULT CRenderer::Render_NonBlend_Layer(_float fTimeDelta)
@@ -1177,7 +1227,7 @@ HRESULT CRenderer::Render_NonBlend_Layer(_float fTimeDelta)
 
 HRESULT CRenderer::Render_Lights(_float fTimeDelta)
 {
-	/* ºû ¿¬»êÇÑ °á°ú¸¦ ·»´õÅ¸°Ù¿¡ ±â·ÏÇØÁØ´Ù. (¸í¾Ï + ) */
+	/* ë¹› ì—°ì‚°í•œ ê²°ê³¼ë¥¼ ë Œë”íƒ€ê²Ÿì— ê¸°ë¡í•´ì¤€ë‹¤. (ëª…ì•” + ) */
 	/* Bind : Shade */
 	if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_LightAcc"))))
 		return E_FAIL;
@@ -1202,13 +1252,13 @@ HRESULT CRenderer::Render_Lights(_float fTimeDelta)
 	if (FAILED(m_pRenderInstance->Bind_RT_ShaderResource(m_pShader, "g_DepthTexture", TEXT("Target_Depth"))))
 		return E_FAIL;
 
-		_float4 camPosition = m_pGameInstance->Get_CamPosition_Float4();
-		if (FAILED(m_pShader->Bind_RawValue("g_vCamPosition", &camPosition, sizeof(_float4))))
-			return E_FAIL;
+	_float4 camPosition = m_pGameInstance->Get_CamPosition_Float4();
+	if (FAILED(m_pShader->Bind_RawValue("g_vCamPosition", &camPosition, sizeof(_float4))))
+		return E_FAIL;
 
 	m_pVIBuffer->Bind_Buffers();
 
-	m_pRenderInstance->Render_Lights(CLight_Manager::LIGHT_BACKGROUND, m_pShader, m_pVIBuffer, "", fTimeDelta); // ¼öÁ¤
+	m_pRenderInstance->Render_Lights(CLight_Manager::LIGHT_BACKGROUND, m_pShader, m_pVIBuffer, "", fTimeDelta); // ìˆ˜ì •
 
 	if (FAILED(m_pRenderInstance->End_MRT()))
 		return E_FAIL;
@@ -1245,7 +1295,7 @@ HRESULT CRenderer::Render_Deferred(_float fTimeDelta)
 
 	XMStoreFloat4x4(&LightViewMatrix, XMMatrixLookAtLH(XMVectorSet(0.f, 10.f, 0.f, 1.f), XMVectorSet(1.f, -1.f, 1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f)));
 	XMStoreFloat4x4(&LightProjMatrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(120.0f), (_float)1920.f / 1080.f, 0.1f, 1000.f));
-	
+
 	if (FAILED(m_pShader->Bind_Matrix("g_LightViewMatrix", &LightViewMatrix)))
 		return E_FAIL;
 
@@ -1293,7 +1343,7 @@ HRESULT CRenderer::Render_NonLight_Effect(_float fTimeDelta)
 
 			if (FAILED(m_pRenderInstance->End_MRT()))
 				return E_FAIL;
-			
+
 			m_iEffectRenderCount++;
 		}
 		else
@@ -1305,7 +1355,7 @@ HRESULT CRenderer::Render_NonLight_Effect(_float fTimeDelta)
 			{
 				if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_GameObjects"))))
 					return E_FAIL;
-			
+
 				if (nullptr != pRenderObject)
 					pRenderObject->Render(fTimeDelta);
 
@@ -1379,7 +1429,7 @@ HRESULT CRenderer::Render_AllGlow_Effect_BackSide(_float fTimeDelta)
 	_uint iEffectGlowPri_RenderCount = 0;
 	for (auto& pRenderObject : m_RenderObjects[RG_BACKSIDE_EFFECT])
 	{
-		if (pRenderObject->Get_GameObjectData() == -2) // -2 ¸é ¸ÕÀú ±Û·Î¿ì ÇÁ¸®·Î ±×·Á¹ö¸°´Ù
+		if (pRenderObject->Get_GameObjectData() == -2) // -2 ë©´ ë¨¼ì € ê¸€ë¡œìš° í”„ë¦¬ë¡œ ê·¸ë ¤ë²„ë¦°ë‹¤
 		{
 			if (nullptr != pRenderObject)
 				pRenderObject->Priority_Render(fTimeDelta);
@@ -1404,7 +1454,7 @@ HRESULT CRenderer::Render_AllGlow_Effect_BackSide(_float fTimeDelta)
 	_uint iEffectGlow_RenderCount = 0;
 	for (auto& pRenderObject : m_RenderObjects[RG_BACKSIDE_EFFECT])
 	{
-		if (pRenderObject->Get_GameObjectData() > -1) //  -1 ÀÌ»óÀÌ¸é ±Û·Î¿ì µÚ·Î ±×¸®´Â°Å
+		if (pRenderObject->Get_GameObjectData() > -1) //  -1 ì´ìƒì´ë©´ ê¸€ë¡œìš° ë’¤ë¡œ ê·¸ë¦¬ëŠ”ê±°
 		{
 			if (nullptr != pRenderObject)
 				pRenderObject->Priority_Render(fTimeDelta);
@@ -1421,7 +1471,7 @@ HRESULT CRenderer::Render_AllGlow_Effect_BackSide(_float fTimeDelta)
 
 			iEffectGlow_RenderCount++;
 		}
-		else if (pRenderObject->Get_GameObjectData() == -1) // -1 ¹Ù·Î ±×¸°´Ù
+		else if (pRenderObject->Get_GameObjectData() == -1) // -1 ë°”ë¡œ ê·¸ë¦°ë‹¤
 		{
 			if (nullptr != pRenderObject)
 				pRenderObject->Priority_Render(fTimeDelta);
@@ -1434,7 +1484,7 @@ HRESULT CRenderer::Render_AllGlow_Effect_BackSide(_float fTimeDelta)
 	}
 
 	m_RenderObjects[RG_BACKSIDE_EFFECT].clear();
-	
+
 	if (iEffectGlow_RenderCount > 0)
 		Draw_AllGlow_Effect(false);
 
@@ -1454,12 +1504,12 @@ HRESULT CRenderer::Render_AllGlow_Effect_BackSide(_float fTimeDelta)
 		if (FAILED(m_pRenderInstance->Bind_RT_ShaderResource(m_pGlowShader, "g_BlurTexture", TEXT("Target_Player_Blur_Y"))))
 			return E_FAIL;
 
-	
+
 		m_pGlowShader->Begin(9);
 		m_pVIBuffer->Bind_Buffers();
 		m_pVIBuffer->Render();
 	}
-	
+
 	return S_OK;
 }
 
@@ -1468,7 +1518,7 @@ HRESULT CRenderer::Render_AllGlow_Effect_Pri(_float fTimeDelta)
 	m_iEffectGlowPri_RenderCount = 0;
 	for (auto& pRenderObject : m_RenderObjects[RG_BLEND])
 	{
-		if (pRenderObject->Get_GameObjectData() == -2) // -2 ¸é ¸ÕÀú ±Û·Î¿ì ÇÁ¸®·Î ±×·Á¹ö¸°´Ù
+		if (pRenderObject->Get_GameObjectData() == -2) // -2 ë©´ ë¨¼ì € ê¸€ë¡œìš° í”„ë¦¬ë¡œ ê·¸ë ¤ë²„ë¦°ë‹¤
 		{
 			if (nullptr != pRenderObject)
 				pRenderObject->Priority_Render(fTimeDelta);
@@ -1497,7 +1547,7 @@ HRESULT CRenderer::Render_Blend(_float fTimeDelta)
 {
 	for (auto& pRenderObject : m_RenderObjects[RG_BLEND])
 	{
-		if (pRenderObject->Get_GameObjectData() > -1) //  -1 ÀÌ»óÀÌ¸é ±Û·Î¿ì µÚ·Î ±×¸®´Â°Å
+		if (pRenderObject->Get_GameObjectData() > -1) //  -1 ì´ìƒì´ë©´ ê¸€ë¡œìš° ë’¤ë¡œ ê·¸ë¦¬ëŠ”ê±°
 		{
 			if (nullptr != pRenderObject)
 				pRenderObject->Priority_Render(fTimeDelta);
@@ -1514,7 +1564,7 @@ HRESULT CRenderer::Render_Blend(_float fTimeDelta)
 
 			m_iEffectRenderCount++;
 		}
-		else if (pRenderObject->Get_GameObjectData() == -1) // -1 ¹Ù·Î ±×¸°´Ù
+		else if (pRenderObject->Get_GameObjectData() == -1) // -1 ë°”ë¡œ ê·¸ë¦°ë‹¤
 		{
 			if (nullptr != pRenderObject)
 				pRenderObject->Priority_Render(fTimeDelta);
@@ -1657,7 +1707,7 @@ HRESULT CRenderer::Render_CutScene_Object(_float fTimeDelta)
 
 HRESULT CRenderer::Render_CutScene_Late_Effect(_float fTimeDelta)
 {
-	
+
 
 	for (auto& pRenderObject : m_RenderObjects[RG_CUTSCENE_LATE_EFFECT])
 	{
@@ -1689,14 +1739,43 @@ HRESULT CRenderer::Render_Node(_float fTimeDelta)
 	return S_OK;
 }
 
+HRESULT CRenderer::Render_ToolViewPort(_float fTimeDelta)
+{
+	if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_ToolViewPort"))))
+		return E_FAIL;
+
+	if (FAILED(m_pDistortionShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pDistortionShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pDistortionShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	//if (FAILED(m_pRenderInstance->Bind_RT_ShaderResource(m_pDistortionShaderCom, "g_Texture", TEXT("Target_Distortion"))))
+	//	return E_FAIL;
+
+	if (FAILED(m_pDistortionShaderCom->Bind_ShaderResourceView("g_Texture", m_pBackBufferSRV)))
+		return E_FAIL;
+
+	m_pDistortionShaderCom->Begin(2);
+	m_pVIBuffer->Bind_Buffers();
+	m_pVIBuffer->Render();
+
+	if (FAILED(m_pRenderInstance->End_MRT()))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
 HRESULT CRenderer::Render_Distortion(_float fTimeDelta)
 {
 	if (NULL == m_Distortions.size())
 		return S_OK;
-	
+
 	m_fAccTime += fTimeDelta;
 
-	/* º¤ÅÍ¸¦ ¼øÈ¸ÇÏ¸é¼­ ÇöÀç ±â·ÏµÈ À§Ä¡¿¡ µğ½ºÅä¼Ç ¸¶½ºÅ©¸¦ ÇÑ ·»´õÅ¸°Ù¿¡ ÇÑ¹ø¿¡ ±×¸² */
+	/* ë²¡í„°ë¥¼ ìˆœíšŒí•˜ë©´ì„œ í˜„ì¬ ê¸°ë¡ëœ ìœ„ì¹˜ì— ë””ìŠ¤í† ì…˜ ë§ˆìŠ¤í¬ë¥¼ í•œ ë Œë”íƒ€ê²Ÿì— í•œë²ˆì— ê·¸ë¦¼ */
 	if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_Distortion"))))
 		return E_FAIL;
 
@@ -1710,7 +1789,7 @@ HRESULT CRenderer::Render_Distortion(_float fTimeDelta)
 
 	if (FAILED(m_pDistortionTextureCom->Bind_ShaderResource(m_pDistortionShaderCom, "g_Texture", 0)))
 		return E_FAIL;
-	 
+
 	for (auto iter = m_Distortions.begin(); iter != m_Distortions.end(); )
 	{
 		iter->fLifeTime -= fTimeDelta;
@@ -1760,7 +1839,7 @@ HRESULT CRenderer::Render_Distortion(_float fTimeDelta)
 		m_pDistortionShaderCom->Bind_RawValue("g_vDir", &iter->vDir, sizeof(_float3));
 		m_pDistortionShaderCom->Bind_RawValue("g_Factor", &iter->fFactor, sizeof(_float));
 
-		if(iter->isLoop == false)
+		if (iter->isLoop == false)
 			m_pDistortionShaderCom->Begin(0);
 		else
 			m_pDistortionShaderCom->Begin(4);
@@ -1774,11 +1853,11 @@ HRESULT CRenderer::Render_Distortion(_float fTimeDelta)
 	if (FAILED(m_pRenderInstance->End_MRT()))
 		return E_FAIL;
 
-	/* ¹é¹öÆÛ ½¦ÀÌ´õ¸®¼Ò½ººä¸¦ ¹Ù·Î ·»´õÅ¸°ÙÀ¸·Î ÀÖ´Â »óÅÂ¿¡¼± ºÒ°¡´ÉÇÔ
-	   ±×·¡¼­ ÀÓÀÇÀÇ ´Ù¸¥ ·»´õÅ¸°ÙÀÇ ¹é¹öÆÛ¿Í ¿©·¯ µğ½ºÅä¼ÇÀ» ±×¸° ·»´õÅ¸°ÙÀ» ÀÌ¿ëÇØ¼­ È¿°ú¸¦ ÁÜ */
+	/* ë°±ë²„í¼ ì‰ì´ë”ë¦¬ì†ŒìŠ¤ë·°ë¥¼ ë°”ë¡œ ë Œë”íƒ€ê²Ÿìœ¼ë¡œ ìˆëŠ” ìƒíƒœì—ì„  ë¶ˆê°€ëŠ¥í•¨
+	   ê·¸ë˜ì„œ ì„ì˜ì˜ ë‹¤ë¥¸ ë Œë”íƒ€ê²Ÿì˜ ë°±ë²„í¼ì™€ ì—¬ëŸ¬ ë””ìŠ¤í† ì…˜ì„ ê·¸ë¦° ë Œë”íƒ€ê²Ÿì„ ì´ìš©í•´ì„œ íš¨ê³¼ë¥¼ ì¤Œ */
 	if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_ResultDistortion_BackBuffer"))))
 		return E_FAIL;
-	
+
 	if (FAILED(m_pDistortionShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
 		return E_FAIL;
 	if (FAILED(m_pDistortionShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
@@ -1792,7 +1871,7 @@ HRESULT CRenderer::Render_Distortion(_float fTimeDelta)
 	if (FAILED(m_pDistortionShaderCom->Bind_ShaderResourceView("g_BackBufferTexture", m_pBackBufferSRV)))
 		return E_FAIL;
 
-	
+
 
 	m_pDistortionShaderCom->Begin(1);
 	m_pVIBuffer->Bind_Buffers();
@@ -1801,7 +1880,7 @@ HRESULT CRenderer::Render_Distortion(_float fTimeDelta)
 	if (FAILED(m_pRenderInstance->End_MRT()))
 		return E_FAIL;
 
-	/* ³ª¿Â °á°ú¸¦ ¹Ù·Î ¹é¹öÆÛ¿¡ µ¤¾î¾¸ */
+	/* ë‚˜ì˜¨ ê²°ê³¼ë¥¼ ë°”ë¡œ ë°±ë²„í¼ì— ë®ì–´ì”€ */
 	if (FAILED(m_pDistortionShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
 		return E_FAIL;
 	if (FAILED(m_pDistortionShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
@@ -1824,7 +1903,7 @@ HRESULT CRenderer::Render_Distortion(_float fTimeDelta)
 
 HRESULT CRenderer::Render_Debug(_float fTimeDelta)
 {
-	// Debug Component °ü·Ã Ã³¸®
+	// Debug Component ê´€ë ¨ ì²˜ë¦¬
 	if (m_bShow_Debug_Component)
 	{
 		for (auto& pComponent : m_DebugComponent)
@@ -1836,41 +1915,44 @@ HRESULT CRenderer::Render_Debug(_float fTimeDelta)
 		m_DebugComponent.clear();
 	}
 
-	// Render Target °ü·Ã Ã³¸®
+	// Render Target ê´€ë ¨ ì²˜ë¦¬
 	if (m_bShow_RenderTarget)
 	{
-		// Matrix ¹ÙÀÎµù
+		// Matrix ë°”ì¸ë”©
 		if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 			return E_FAIL;
 		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 			return E_FAIL;
 
-		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_BloomDiffuse"), m_pShader, m_pVIBuffer)))
+		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_Player"), m_pShader, m_pVIBuffer)))
 		//	return E_FAIL;
-		if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_Player"), m_pShader, m_pVIBuffer)))
+
+		if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_BloomDiffuse"), m_pShader, m_pVIBuffer)))
 			return E_FAIL;
+		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_ToolViewPort"), m_pShader, m_pVIBuffer)))
+		//	return E_FAIL;
 		/*if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_ShadowObjects"), m_pShader, m_pVIBuffer)))
 			return E_FAIL;*/
 
-		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_EffectToolPick"), m_pShader, m_pVIBuffer)))
-		//	return E_FAIL;
+			//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_EffectToolPick"), m_pShader, m_pVIBuffer)))
+			//	return E_FAIL;
 
-		/*
-		MRT_Distortion
-		MRT_ResultDistortion_BackBuffer
-		*/
-		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_All_Blur_X"), m_pShader, m_pVIBuffer)))
-		//	return E_FAIL;
-		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_All_Blur_Y"), m_pShader, m_pVIBuffer)))
-		//	return E_FAIL;
-		//// Render Target µğ¹ö±× ·»´õ¸µ
-		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_AllGlowDiffuse"), m_pShader, m_pVIBuffer)))
-		//	return E_FAIL;
-		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer)))
-		//	return E_FAIL;
+			/*
+			MRT_Distortion
+			MRT_ResultDistortion_BackBuffer
+			*/
+			//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_All_Blur_X"), m_pShader, m_pVIBuffer)))
+			//	return E_FAIL;
+			//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_All_Blur_Y"), m_pShader, m_pVIBuffer)))
+			//	return E_FAIL;
+			//// Render Target ë””ë²„ê·¸ ë Œë”ë§
+			//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_AllGlowDiffuse"), m_pShader, m_pVIBuffer)))
+			//	return E_FAIL;
+			//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer)))
+			//	return E_FAIL;
 
-		//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_ShadowObjects"), m_pShader, m_pVIBuffer)))
-		//	return E_FAIL;
+			//if (FAILED(m_pRenderInstance->Render_RT_Debug(TEXT("MRT_ShadowObjects"), m_pShader, m_pVIBuffer)))
+			//	return E_FAIL;
 	}
 	if (!m_bShow_RenderTarget)
 		return S_OK;
@@ -2049,6 +2131,7 @@ HRESULT CRenderer::Draw_AllWhiteOut(_float fTimeDelta)
 
 HRESULT CRenderer::Draw_MapBlackOut(_float fTimeDelta)
 {
+
 	if (m_fAccBlackTime == 0.f && m_isStartBlackOut == false)
 		return S_OK;
 
@@ -2057,7 +2140,7 @@ HRESULT CRenderer::Draw_MapBlackOut(_float fTimeDelta)
 	if (FAILED(m_pRenderInstance->End_MRT()))
 		return E_FAIL;
 
-	if(m_isStartBlackOut == true)
+	if (m_isStartBlackOut == true)
 		m_fAccBlackTime += fTimeDelta;
 	else
 		m_fAccBlackTime -= fTimeDelta;
@@ -2078,7 +2161,7 @@ HRESULT CRenderer::Draw_MapBlackOut(_float fTimeDelta)
 	_float m_fAccBlackTime = { 0.f };
 	const _float m_fBlackTime = { 1.f };
 	*/
-	
+
 	if (FAILED(m_pShader->Bind_RawValue("g_isStartBlackOut", &m_isStartBlackOut, sizeof(_bool))))
 		return E_FAIL;
 	if (FAILED(m_pShader->Bind_RawValue("g_fAccBlackTime", &m_fAccBlackTime, sizeof(_float))))
@@ -2090,7 +2173,7 @@ HRESULT CRenderer::Draw_MapBlackOut(_float fTimeDelta)
 	m_pShader->Begin(8);
 	m_pVIBuffer->Bind_Buffers();
 	m_pVIBuffer->Render();
-	
+
 
 	return S_OK;
 }
@@ -2124,7 +2207,7 @@ HRESULT CRenderer::Draw_AllGlow_Effect(_int isPri)
 	for (size_t i = 0; i < iLoopCount; i++)
 	{
 
-		if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_Down")))) 
+		if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_Down"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGlowShader->Bind_Matrix("g_WorldMatrix", &m_DownWorldMatrix)))
@@ -2143,7 +2226,7 @@ HRESULT CRenderer::Draw_AllGlow_Effect(_int isPri)
 			return E_FAIL;
 
 		// g_DownTexSize, g_DownSamplingSize
-		if (FAILED(m_pRenderInstance->Bind_RT_EffectShaderResource(m_pGlowShader, "g_Texture", TEXT("Target_AllGlowDiffuse_"),isPri)))
+		if (FAILED(m_pRenderInstance->Bind_RT_EffectShaderResource(m_pGlowShader, "g_Texture", TEXT("Target_AllGlowDiffuse_"), isPri)))
 			return E_FAIL;
 
 
@@ -2416,7 +2499,7 @@ HRESULT CRenderer::Draw_MapBloom()
 	_float2 fSamplingSize = { 4.f,4.f };
 	if (FAILED(m_pGlowShader->Bind_RawValue("g_DownSamplingSize", &fSamplingSize, sizeof(_float2))))
 		return E_FAIL;
-	
+
 	if (FAILED(m_pRenderInstance->Bind_RT_ShaderResource(m_pGlowShader, "g_Texture", TEXT("Target_MapBloomAlpha"))))
 		return E_FAIL;
 
@@ -2571,10 +2654,10 @@ HRESULT CRenderer::Draw_WhiteBlack_Mode(_float fTimeDelta)
 
 	if (m_isStartWhiteOut == true)
 	{
-		/* È­ÀÌÆ® ½ºÇÇµå Å×½ºÆ® */
+		/* í™”ì´íŠ¸ ìŠ¤í”¼ë“œ í…ŒìŠ¤íŠ¸ */
 		m_fAccWhiteTime += fTimeDelta * m_fWhiteSpeed;
 		//m_fAccWhiteTime += fTimeDelta;
-		
+
 		if (m_fAccWhiteTime >= 2.5f)
 		{
 			m_fAccWhiteTime = 2.5f;
@@ -2589,7 +2672,7 @@ HRESULT CRenderer::Draw_WhiteBlack_Mode(_float fTimeDelta)
 		m_fAccWhiteTime -= fTimeDelta;
 
 		if (m_fAccWhiteTime <= 0.f)
-		{ 
+		{
 			m_isStartWhiteOut = false;
 			m_pDoneCheck = nullptr;
 		}
@@ -2604,7 +2687,7 @@ HRESULT CRenderer::Draw_WhiteBlack_Mode(_float fTimeDelta)
 
 	if (FAILED(m_pShader->Bind_RawValue("g_isEndWhiteOut", &m_isEndWhiteOut, sizeof(_bool))))
 		return E_FAIL;
-	
+
 	_bool isStartCheck = m_isMaintainWhite + m_isStartWhiteOut;
 	if (FAILED(m_pShader->Bind_RawValue("g_isStartBlackOut", &isStartCheck, sizeof(_bool))))
 		return E_FAIL;
@@ -2625,7 +2708,7 @@ HRESULT CRenderer::Draw_WhiteBlack_Mode(_float fTimeDelta)
 	{
 		if (m_vWhiteDir.x == 1)
 		{
-			if(FAILED(m_pEastFinish_TextureCom->Bind_ShaderResource(m_pShader,"g_DiffuseTexture",0)))
+			if (FAILED(m_pEastFinish_TextureCom->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", 0)))
 				return E_FAIL;
 
 		}
@@ -2642,10 +2725,25 @@ HRESULT CRenderer::Draw_WhiteBlack_Mode(_float fTimeDelta)
 			return E_FAIL;
 
 	}
-	
+
 	m_pShader->Begin(10);
 	m_pVIBuffer->Bind_Buffers();
 	m_pVIBuffer->Render();
+}
+
+HRESULT CRenderer::Render_TestEffect(_float fTimeDelta)
+{
+	for (auto& pRenderObject : m_RenderObjects[RG_TESTEFFECT])
+	{
+		if (nullptr != pRenderObject)
+			pRenderObject->Render(fTimeDelta);
+
+		//Safe_Release(pRenderObject);
+	}
+
+	//m_RenderObjects[RG_TESTEFFECT].clear();
+
+	return S_OK;
 }
 
 HRESULT CRenderer::Initialize_RenderTarget()
@@ -2754,7 +2852,7 @@ HRESULT CRenderer::Initialize_RenderTarget()
 		return E_FAIL;
 	if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_Blur_Y"), TEXT("Target_Blur_Y"))))
 		return E_FAIL;
-	/* ¾÷»ùÇÃ¸µ ÀÓ½Ã */
+	/* ì—…ìƒ˜í”Œë§ ì„ì‹œ */
 	if (FAILED(m_pRenderInstance->Add_RenderTarget(TEXT("Target_UpTarget_Second"), ViewportDesc.Width / 2, ViewportDesc.Height / 2, DXGI_FORMAT_B8G8R8A8_UNORM, XMVectorSet(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 	if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_UpSecond"), TEXT("Target_UpTarget_Second"))))
@@ -2787,7 +2885,7 @@ HRESULT CRenderer::Initialize_RenderTarget()
 		return E_FAIL;
 #pragma endregion
 
-	/* ±×¸²ÀÚ ÀÓ½Ã */
+	/* ê·¸ë¦¼ì ì„ì‹œ */
 	if (FAILED(m_pRenderInstance->Add_RenderTarget(TEXT("Target_LightDepth"), ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, XMVectorSet(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 	if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_ShadowObjects"), TEXT("Target_LightDepth"))))
@@ -2868,6 +2966,19 @@ HRESULT CRenderer::Initialize_RenderTarget()
 		return E_FAIL;
 
 #pragma endregion	
+
+	if (FAILED(m_pRenderInstance->Add_RenderTarget(TEXT("Target_ToolViewPort"), ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+		return E_FAIL;
+	if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_ToolViewPort"), TEXT("Target_ToolViewPort"))))
+		return E_FAIL;
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (FAILED(m_pRenderInstance->Add_RenderTarget(TEXT("Target_ToolRT_") + to_wstring(i), ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+		if (FAILED(m_pRenderInstance->Add_MRT(TEXT("MRT_ToolRT_") + to_wstring(i), TEXT("Target_ToolRT_") + to_wstring(i))))
+			return E_FAIL;
+	}
 	return S_OK;
 }
 
@@ -2955,7 +3066,7 @@ HRESULT CRenderer::Draw_Test_PostProcess(_float fTImeDelta)
 	m_pGlowShader->Begin(14);
 	m_pVIBuffer->Bind_Buffers();
 	m_pVIBuffer->Render();
-	
+
 
 	/*
 	if (FAILED(m_pRenderInstance->Begin_MRT(TEXT("MRT_ResultDistortion_BackBuffer"))))
@@ -3037,8 +3148,8 @@ void CRenderer::Start_WhiteOut(_float2 vDir, _bool* isDone, _float fWhiteSpeed)
 	m_pDoneCheck = isDone;
 	m_isRockStart = true;
 	m_fSpriteSize = { 1.f / 5.f,1.f / 12.f };
-//	m_fSpriteSize = { 1/1920.f,1/1080.f };
-	//m_fSpriteSize = { 1 / 384.f,1 / 90.f };
+	//	m_fSpriteSize = { 1/1920.f,1/1080.f };
+		//m_fSpriteSize = { 1 / 384.f,1 / 90.f };
 	m_fSpriteCurPos = { 4.f,11.f };
 	m_fAccRockTime = 0.f;
 }
@@ -3073,7 +3184,7 @@ void CRenderer::Free()
 
 	for (auto& pComponent : m_DebugComponent)
 		Safe_Release(pComponent);
-	
+
 	Safe_Release(m_pAuraTextureCom);
 	Safe_Release(m_pDistortionTransformCom);
 	Safe_Release(m_pDistortionTextureCom);

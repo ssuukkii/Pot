@@ -693,29 +693,29 @@ _bool CCharacter::InputCommand()
 
 
 
-		if (m_pGameInstance->Key_Down(DIK_NUMPAD7) || m_pGameInstance->Key_Down(DIK_7))
+		if (m_pGameInstance->Key_Down(DIK_NUMPAD7))// || m_pGameInstance->Key_Down(DIK_7))
 		{
 			iAttackkey = ATTACK_LIGHT;
 		}
 
-		if (m_pGameInstance->Key_Down(DIK_NUMPAD8) || m_pGameInstance->Key_Down(DIK_8))
+		if (m_pGameInstance->Key_Down(DIK_NUMPAD8))// || m_pGameInstance->Key_Down(DIK_8))
 		{
 			iAttackkey = ATTACK_MEDIUM;
 
 		}
-		if (m_pGameInstance->Key_Down(DIK_NUMPAD4) || m_pGameInstance->Key_Down(DIK_4))
+		if (m_pGameInstance->Key_Down(DIK_NUMPAD4))// || m_pGameInstance->Key_Down(DIK_4))
 		{
 			iAttackkey = ATTACK_SPECIAL;
 
 		}
-		if (m_pGameInstance->Key_Down(DIK_NUMPAD5) || m_pGameInstance->Key_Down(DIK_5))
+		if (m_pGameInstance->Key_Down(DIK_NUMPAD5))// || m_pGameInstance->Key_Down(DIK_5))
 		{
 			iAttackkey = ATTACK_HEAVY;
 
 		}
 
 
-		if (m_pGameInstance->Key_Down(DIK_NUMPAD9) || m_pGameInstance->Key_Down(DIK_9))
+		if (m_pGameInstance->Key_Down(DIK_NUMPAD9))// || m_pGameInstance->Key_Down(DIK_9))
 		{
 			iAttackkey = ATTACK_GRAB;
 
@@ -3952,11 +3952,11 @@ void CCharacter::Sparking_ON(_float fTimeDelta)
 {
 
 	//스파킹이 꺼져있는경우 켜는지 확인
-	if (m_bSparking == false)
+	//if (m_bSparking == false)
 	{
 		if (m_iPlayerTeam == 1)
 		{
-			if (m_pGameInstance->Key_Down(DIK_R) && m_pGameInstance->Key_Pressing(DIK_O) && CBattleInterface_Manager::Get_Instance()->Get_bSparkingEnable(m_iPlayerTeam))
+			if (m_pGameInstance->Key_Down(DIK_5) && CBattleInterface_Manager::Get_Instance()->Get_bSparkingEnable(m_iPlayerTeam))
 			{
 				if (Check_bCurAnimationisGroundMove() || Check_bCurAnimationisAirMove() || m_pModelCom->m_iCurrentAnimationIndex == m_iGrabReadyAnimationIndex)
 				{
@@ -3995,7 +3995,7 @@ void CCharacter::Sparking_ON(_float fTimeDelta)
 		}
 		else
 		{
-			if (m_pGameInstance->Key_Down(DIK_PGDN) && m_pGameInstance->Key_Pressing(DIK_NUMPAD9) && CBattleInterface_Manager::Get_Instance()->Get_bSparkingEnable(m_iPlayerTeam))
+			if (m_pGameInstance->Key_Down(DIK_4) && CBattleInterface_Manager::Get_Instance()->Get_bSparkingEnable(m_iPlayerTeam))
 			{
 				if (Check_bCurAnimationisGroundMove() || Check_bCurAnimationisAirMove() || m_pModelCom->m_iCurrentAnimationIndex == m_iGrabReadyAnimationIndex)
 				{

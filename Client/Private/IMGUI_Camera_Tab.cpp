@@ -15,6 +15,20 @@ CIMGUI_Camera_Tab::CIMGUI_Camera_Tab(ID3D11Device* pDevice, ID3D11DeviceContext*
 {
 }
 
+void CIMGUI_Camera_Tab::Effect_Menu()
+{
+}
+
+void CIMGUI_Camera_Tab::Effect_Transform()
+{
+}
+
+void CIMGUI_Camera_Tab::Camera_Set(_uint iNumCameraModel)
+{
+	m_iSelected_Model = static_cast<CAMERA_MODELID>(iNumCameraModel);
+	UpdateCameraSelection();
+}
+
 HRESULT CIMGUI_Camera_Tab::Initialize()
 {
 	// 모델 이름 배열 초기화
@@ -226,7 +240,7 @@ HRESULT CIMGUI_Camera_Tab::Initialize()
 
 void CIMGUI_Camera_Tab::Render(_float fTimeDelta)
 {
-	//초기 메인카메라 셋팅
+	////초기 메인카메라 셋팅
 	if (m_pMainCamera == nullptr)
 	{
 		CGameObject* camera = m_pGameInstance->Get_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Main_Camera"));
@@ -236,40 +250,40 @@ void CIMGUI_Camera_Tab::Render(_float fTimeDelta)
 		return;
 	}
 
-	// 모델 선택 UI 호출
-	IMGUI_Camera_Select_Model(fTimeDelta);
+	//// 모델 선택 UI 호출
+	//IMGUI_Camera_Select_Model(fTimeDelta);
 
-	// 모델이 선택된 경우에만 스킬 선택 UI를 표시
-	if (m_iSelected_Model >= CAMERA_MODELID_SON) {
-		ImGui::Spacing();  // 한 줄 띄우기
-		ImGui::Separator();  // 경계선 그리기
+	//// 모델이 선택된 경우에만 스킬 선택 UI를 표시
+	//if (m_iSelected_Model >= CAMERA_MODELID_SON) {
+	//	ImGui::Spacing();  // 한 줄 띄우기
+	//	ImGui::Separator();  // 경계선 그리기
 
-		// 스킬 선택 UI 호출
-		IMGUI_Camera_Select_Skill(fTimeDelta);
-	}
+	//	// 스킬 선택 UI 호출
+	//	IMGUI_Camera_Select_Skill(fTimeDelta);
+	//}
 
 
-	//선택안되면 -1임.
-	if (m_iSelected_Skill >= 0)
-	{
-		ImGui::Spacing();  // 한 줄 띄우기
-		ImGui::Separator();  // 경계선 그리기
+	////선택안되면 -1임.
+	//if (m_iSelected_Skill >= 0)
+	//{
+	//	ImGui::Spacing();  // 한 줄 띄우기
+	//	ImGui::Separator();  // 경계선 그리기
 
-		// 애니메이션 선택 UI 호출
-		IMGUI_Camera_Select_Animation(fTimeDelta);
-	}
+	//	// 애니메이션 선택 UI 호출
+	//	IMGUI_Camera_Select_Animation(fTimeDelta);
+	//}
 
-	if (m_iSelected_Animation >= 0)
-	{
-		// 포인트 보여주기
-		IMGUI_Show_Points(fTimeDelta);
+	//if (m_iSelected_Animation >= 0)
+	//{
+	//	// 포인트 보여주기
+	//	IMGUI_Show_Points(fTimeDelta);
 
-		// Point 버튼 호출
-		IMGUI_Button();
-	}
+	//	// Point 버튼 호출
+	//	IMGUI_Button();
+	//}
 
-	////각 모델과 각 스킬에 연결된 카메라가 가지고 있는 Point를 메모장으로 저장하는 방식
-	IMGUI_Save_Button();
+	//////각 모델과 각 스킬에 연결된 카메라가 가지고 있는 Point를 메모장으로 저장하는 방식
+	//IMGUI_Save_Button();
 }
 
 void CIMGUI_Camera_Tab::IMGUI_Camera_Select_Model(_float fTimeDelta)

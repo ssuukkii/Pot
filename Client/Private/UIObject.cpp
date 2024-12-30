@@ -59,29 +59,33 @@ HRESULT CUIObject::Initialize(void* pArg)
 		}
 	}
 
-	m_bIsActive = true;
+	m_bIsActive = false;
 	m_pUI_Manager->m_bActive = m_bIsActive;
 	return S_OK;
 }
 
 void CUIObject::Camera_Update(_float fTimeDelta)
 {
+	m_bIsActive = false;
 	__super::Camera_Update(fTimeDelta);
 }
 
 void CUIObject::Update(_float fTimeDelta)
 {
+	m_bIsActive = false;
 	InitPlayer();
 }
 
 void CUIObject::Late_Update(_float fTimeDelta)
 {
+	m_bIsActive = false;
 	if (m_pMainPawn != nullptr)
 		m_bCharaStun = m_pMainPawn->Get_PawnDesc().bStun;
 }
 
 HRESULT CUIObject::Render(_float fTimeDelta)
 {
+	m_bIsActive = false;
 	return S_OK;
 }
 

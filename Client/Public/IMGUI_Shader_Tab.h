@@ -49,6 +49,9 @@ protected:
 	virtual ~CIMGUI_Shader_Tab() = default;
 	
 public:
+	virtual void Effect_Menu() override;
+	virtual void Effect_Transform() override;
+	virtual void Camera_Set(_uint iNumCameraModel) override;
 	HRESULT Initialize() override;
 	HRESULT Load_Initialize(string strFilename);
 

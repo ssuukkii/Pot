@@ -1,4 +1,5 @@
 #include "..\public\Graphic_Device.h"
+#include <comdef.h>
 
 CGraphic_Device::CGraphic_Device()
 	: m_pDevice{ nullptr }
@@ -17,8 +18,15 @@ HRESULT CGraphic_Device::Initialize(HWND hWnd, _bool isWindowed, _uint iWinSizeX
 	D3D_FEATURE_LEVEL			FeatureLV;
 
 	/* 그래픽 장치를 초기화한다. */
-	if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, iFlag, nullptr, 0, D3D11_SDK_VERSION, &m_pDevice, &FeatureLV, &m_pDeviceContext)))
+	HRESULT hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, iFlag, nullptr, 0,
+		D3D11_SDK_VERSION, &m_pDevice, &FeatureLV, &m_pDeviceContext);
+	if (FAILED(hr)) {
+		_com_error err(hr);
+		std::wcerr << L"Error: " << err.ErrorMessage() << std::endl;
+		MSG_BOX(err.ErrorMessage());
 		return E_FAIL;
+	}
+
 
 	/* SwapChain 전면과 후면버퍼를 번갈아가며 화면에 보여준다.(Present) */
 

@@ -37,9 +37,11 @@ public: /* For.Renderer */
 	void Create_HitDistortion(_float4 vPlayerPos, _float3 vDir = { 1,0,0 }, _float2 vOffSetPos = { 0.f,0.f }, _float2 vOffSetScale = { 1.f,1.f }, _float fLifeTime = 0.1f);
 	void Show_OutLine();
 	void Show_Layer_View();
+	void Show_ToolView();
+	
 	_bool Get_isLayerView();
 	void Set_CurMapType(CRenderer::MAP_TYPE eType);
-
+	ID3D11ShaderResourceView* Get_ViewPortSRV();
 public: /* For.Target_Manager */
 	HRESULT Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor);
 	HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
@@ -58,7 +60,8 @@ public: /* For.Target_Manager */
 
 	_int Add_ClientRenderTarget(const _wstring& strMRTTag, const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor);
 	HRESULT Add_ClientRenderTargetToMRT(const _wstring& strMRTTag, const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor);
-	
+	map<const _wstring, list<class CRenderTarget*>>* Get_MRTs();
+	vector<_wstring>* Get_MRTKeys();
 #ifdef _DEBUG
 public:
 	HRESULT Ready_RT_Debug(const _wstring& strTargetTag, _float fCenterX, _float fCenterY, _float fSizeX, _float fSizeY);

@@ -23,6 +23,7 @@ public:
 	HRESULT Add_ClientRenderTargetToMRT(const _wstring& strMRTTag, const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor);
 	HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
 	HRESULT Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV = nullptr);
+	HRESULT Begin_MRT_Debug(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV = nullptr);
 	HRESULT Begin_MRT_DoNotClear(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV = nullptr);
 	HRESULT End_MRT();
 	HRESULT Copy_RenderTarget(const _wstring& strTargetTag, ID3D11Texture2D* pTexture2D);
@@ -42,14 +43,16 @@ public:
 	HRESULT Render_Debug(const _wstring& strMRTTag, class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 #endif
 
-
+	map<const _wstring, list<class CRenderTarget*>>* Get_MRTs() { return &m_MRTs; }
+	vector<_wstring>* Get_MRTKeys() { return &m_MRTKeys; }
+	
 private:
 	ID3D11Device*								m_pDevice = { nullptr };
 	ID3D11DeviceContext*						m_pContext = { nullptr };	
 
 	map<const _wstring, class CRenderTarget*>		m_RenderTargets;
 	map<const _wstring, list<class CRenderTarget*>>	m_MRTs;
-
+	vector<_wstring> m_MRTKeys;
 	_uint m_iBeginEffectCountArray[10] = { 0,0,0,0,0,0,0,0,0,0 };
 private:
 	ID3D11RenderTargetView*						m_pOldRTV = { nullptr };

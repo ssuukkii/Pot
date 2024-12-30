@@ -27,7 +27,7 @@ public:
 		RG_PLAYER_METALLIC, RG_PLAYER_PART,
 		RG_NONBLEND, RG_PLAYER, RG_SHADOWOBJ, RG_BACKSIDE_EFFECT,
 		RG_NONLIGHT, RG_NONLIGHT_EFFECT, RG_GLOW, RG_BLEND, RG_UI, RG_UI_GLOW, RG_MULTY_GLOW,
-		RG_CUTSCENE_PRI_EFFECT, RG_CUTSCENE_OBJECT, RG_CUTSCENE_LATE_EFFECT, RG_NODE, RG_END
+		RG_CUTSCENE_PRI_EFFECT, RG_CUTSCENE_OBJECT, RG_CUTSCENE_LATE_EFFECT, RG_NODE, RG_TESTEFFECT,RG_END
 	};
 
 	enum MAP_TYPE { MAP_SPACE, MAP_VOLCANO, MAP_END };
@@ -48,10 +48,10 @@ public:
 	void Show_OutLine() { m_isOutLine = !m_isOutLine; }
 	void Show_Layer_View() { m_isLayerView = !m_isLayerView; }
 	_bool Get_isLayerView() { return m_isLayerView; }
-
+	void Show_ToolView() { m_bisToolView = !m_bisToolView; }
 private:
 	_bool m_isOutLine = { false };
-
+	_bool m_bisToolView = { true };
 	_bool m_isLayerView = { true };
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
@@ -125,6 +125,7 @@ public: /* For.Distortion Function*/
 	void Create_HitDistortion(_float4 vPlayerPos, _float3 vDir = { 1,0,0 }, _float2 vOffSetPos = { 0.f,0.f }, _float2 vOffSetScale = { 1.f,1.f }, _float fLifeTime = 0.1f);
 
 	void Set_CurMapType(MAP_TYPE eType) { m_eCurMapType = eType; }
+
 private: /* For.Distortion Variable */
 	vector<DISTORTION_DESC>		m_Distortions;
 	
@@ -143,6 +144,7 @@ private: /* For.Distortion Variable */
 	MAP_TYPE m_eCurMapType = { MAP_SPACE };
 public:
 	void Set_AuraColor(_float4 vColor) { m_fAuraColor = vColor; }
+	ID3D11ShaderResourceView* Get_ViewPortSRV();
 private:
 	_float4 m_fAuraColor = {};
 private:
@@ -177,8 +179,9 @@ private:
 	HRESULT Render_CutScene_Object(_float fTimeDelta);
 	HRESULT Render_CutScene_Late_Effect(_float fTimeDelta);
 	HRESULT Render_Node(_float fTimeDelta);
+	HRESULT Render_ToolViewPort(_float fTimeDelta);
 
-
+	HRESULT Render_TestEffect(_float fTimeDelta);
 	HRESULT Initialize_RenderTarget();
 private:
 	HRESULT Render_Debug(_float fTimeDelta);

@@ -26,6 +26,9 @@ public:
 	virtual HRESULT Initialize() = 0;
 	virtual void Render(_float fTimeDelta) = 0;
 
+	virtual void Effect_Menu() = 0;
+	virtual void Effect_Transform() = 0;
+	virtual void Camera_Set(_uint iNumCameraModel) = 0;
 public:
 	virtual const _char* GetTabName() const = 0;
 	virtual void Free();

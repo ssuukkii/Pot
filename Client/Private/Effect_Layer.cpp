@@ -276,7 +276,7 @@ void CEffect_Layer::Late_Update(_float fTimeDelta)
 
 HRESULT CEffect_Layer::Render(_float fTimeDelta)
 {
-	m_pColliderCom->Render(fTimeDelta);
+	//m_pColliderCom->Render(fTimeDelta);
 
 	return S_OK;
 }

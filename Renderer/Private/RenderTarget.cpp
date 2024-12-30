@@ -10,8 +10,9 @@ CRenderTarget::CRenderTarget(ID3D11Device * pDevice, ID3D11DeviceContext * pCont
 	Safe_AddRef(m_pContext);
 }
 
-HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor)
+HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor, const _wstring& strTargetTag)
 {
+	m_strTargetTag = strTargetTag;
 	XMStoreFloat4(&m_vClearColor, vClearColor);
 
 	D3D11_TEXTURE2D_DESC	TextureDesc;
@@ -39,6 +40,15 @@ HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixe
 		return E_FAIL;
 
 	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture2D, nullptr, &m_pSRV)))
+		return E_FAIL;
+
+	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, nullptr, &m_pTexture2D_D)))
+		return E_FAIL;
+
+	if (FAILED(m_pDevice->CreateRenderTargetView(m_pTexture2D_D, nullptr, &m_pRTV_D)))
+		return E_FAIL;
+
+	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture2D, nullptr, &m_pSRV_D)))
 		return E_FAIL;
 
 	return S_OK;
@@ -102,13 +112,31 @@ HRESULT CRenderTarget::Render_Debug(CShader * pShader, CVIBuffer_Rect * pVIBuffe
 	return S_OK;
 }
 
+HRESULT CRenderTarget::Render_Debug(CShader* pShader, CVIBuffer_Rect* pVIBuffer, _float4x4 WorldMatrix)
+{
+	
+	if (FAILED(pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
+		return E_FAIL;
+
+	if (FAILED(pShader->Bind_ShaderResourceView("g_Texture", m_pSRV)))
+		return E_FAIL;
+
+	pShader->Begin(0);
+
+	pVIBuffer->Bind_Buffers();
+
+	pVIBuffer->Render();
+
+	return S_OK;
+}
+
 #endif
 
-CRenderTarget * CRenderTarget::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor)
+CRenderTarget * CRenderTarget::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, _fvector vClearColor, const _wstring& strTargetTag)
 {
 	CRenderTarget*		pInstance = new CRenderTarget(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(iWidth, iHeight, ePixelFormat, vClearColor)))
+	if (FAILED(pInstance->Initialize(iWidth, iHeight, ePixelFormat, vClearColor, strTargetTag)))
 	{
 		MSG_BOX(TEXT("Failed to Created : CRenderTarget"));
 		Safe_Release(pInstance);

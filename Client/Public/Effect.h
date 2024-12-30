@@ -91,6 +91,9 @@ protected:
 	CTexture* m_pDiffuseTextureCom = { nullptr };
 	CTexture* m_pMaskTextureCom = { nullptr };
 
+	CTexture* m_pTestTextureCom = { nullptr };
+	CShader* m_pTestShaderCom = { nullptr };
+	CModel* m_pTestModelCom = { nullptr };
 
 	_float			m_fCurrentAnimPos = {};
 	_float m_fAccTime = { 0.f };

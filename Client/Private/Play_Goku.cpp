@@ -929,7 +929,7 @@ HRESULT CPlay_Goku::Render(_float fTimeDelta)
 	}
 
 #ifdef _DEBUG
-	m_pColliderCom->Render(fTimeDelta);
+	//m_pColliderCom->Render(fTimeDelta);
 #endif // DEBUG
 
 	return S_OK;

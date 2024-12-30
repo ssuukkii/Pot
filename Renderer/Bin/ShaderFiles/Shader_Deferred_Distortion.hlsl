@@ -159,7 +159,8 @@ PS_OUT PS_MAIN_RESULT(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
     
     Out.vColor = g_Texture.Sample(LinearSampler, In.vTexcoord);
-    
+     Out.vColor.a = 1.f;
+    Out.vColor = saturate(Out.vColor);
     return Out;
 }
 PS_OUT PS_MAIN_POST_PROCESS(PS_IN In)

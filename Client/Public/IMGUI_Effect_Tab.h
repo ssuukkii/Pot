@@ -16,6 +16,11 @@ public:
 	void Render(_float fTimeDelta) override;
 	void Push_Initialize();
 	void Save_To_Effect_Layer(_uint iCurTestEffectIndex, const wstring& strEffectLayerTag, void* pArg = nullptr);
+
+	virtual void Effect_Transform() override;
+	virtual void Effect_Menu() override;
+	virtual void Camera_Set(_uint iNumCameraModel) override;
+
 	HRESULT Save_Selected_Effects_File();
 	HRESULT Save_All_Effects_File();
 
