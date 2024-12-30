@@ -874,6 +874,7 @@ void CBattleInterface_Manager::Character_Opening_EndForCharacter(_ubyte iTeam)
         CUI_Manager::Get_Instance()->UsingCreateStartUI();
 
     }
+
 }
 
 void CBattleInterface_Manager::Set_b1VS1(_bool b1vs1)

@@ -169,7 +169,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Opening_Kririn"), TEXT("Layer_Model_Opening"), &Opening_CharacterDesc)))
 		return E_FAIL;
 
-
+	//CMain_Camera* mainCamera = static_cast<CMain_Camera*>(m_pGameInstance->Get_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Main_Camera")));
+	//mainCamera->Set_Virtual_Camera(CMain_Camera::VIRTUAL_CAMERA::VIRTUAL_CAMERA_FREE);
 	CBattleInterface_Manager::Get_Instance()->Character_Opening_AIO();
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Model_Preview"), TEXT("Layer_Model_Preview"))))
